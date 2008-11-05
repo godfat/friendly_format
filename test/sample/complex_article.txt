@@ -1,0 +1,111 @@
+http://phpbb.godfat.org/viewtopic.php?t=873
+<pre> 作者  godfat (godfat 真常)                                 站內  ProjectX
+ 標題  Re: [PSC] variants timer
+ 時間  2008/03/04 Tue 00:34:54
+http://phpbb.godfat.org/viewtopic.php?t=873
+<a href="http://phpbb.godfat.org/viewtopic.php?t=873">
+測試</a>
+<a href="http://phpbb.godfat.org/viewtopic.php?t=873">
+<img src="http://phpbb.godfat.org/templates/subSilver/images/logo_phpBB.gif"/></a>
+※ 引述《godfat (godfat 真常)》之銘言：
+> 3. tuple + traits, 也就是一堆 template 技巧了
+> class Dispatcher{
+>     template <class T>
+>     void sub(shared_ptr<T> p){
+>         get_tuple_data_field_by_type<T>(data).push_back(p);
+>     }
+>     tuple<A, B, C> data;
+> };
+
+以上 A, B, C 是指 timer_subscriber_list<A>, etc.
+
+這個東西會需要從 T => tuple index 的 mapping
+現在這部份做完了...........（template 沒忘太多啊哈哈）
+
+#include <tr1/tuple>
+#include <tr1/type_traits>
+#include <iostream>
+
+using namespace std::tr1;
+
+// 拿來判斷兩個整數是否相同，這是為了檢查有沒有爆表
+// 像是 tuple_element<3, tuple<int,int,int> >::type
+// 這樣就是爆表，因為這 tuple 沒這麼大
+template <bool> struct is_equal_type       { typedef true_type type; };
+template <>     struct is_equal_type<false>{ typedef false_type type; };
+
+// 定義相等的話，is_equal<1,1>::value 會是 1
+//               is_equal<1,2>::value 會是 0
+//                            ::type 會是 true_type/false_type (from tr1)
+template <int Lhs, int Rhs> struct is_equal{
+    enum{ value = Lhs == Rhs };
+    typedef typename is_equal_type<value>::type type;
+};
+
+template <class T, class Tuple, int Index> struct type_index_imp;
+
+// 如果跑到這裡，表示爆表了，在我的 g++4.3 上會顯示：
+// tuple.cpp:20: error: ‘type_not_found’ is not a member of "T"
+template <class T, class Tuple, int Index, class Bool>
+struct type_index_check{
+    enum{ value = T::type_not_found };
+};
+
+// 沒有爆表就繼續找吧
+template <class T, class Tuple, int Index>
+struct type_index_check<T, Tuple, Index, false_type>{
+        enum{ value = type_index_imp<T, Tuple, Index+1>::value };
+};
+
+// 找到了！
+template <class T, class Tuple, int Index, class Bool>
+struct type_index_if{
+    enum{ value = Index }; // found, stop recursion
+};
+
+// 不直接呼叫 imp, 呼叫 check 檢查是否爆表
+template <class T, class Tuple, int Index>
+struct type_index_if<T, Tuple, Index, false_type>{
+    enum{ value = type_index_check<T, Tuple, Index,
+            typename is_equal<Index+1, tuple_size<Tuple>::value>::type>::value };
+};
+
+// 檢查兩個型別是否相同
+template <class T, class Tuple, int Index>
+struct type_index_imp{
+    enum{ value = type_index_if<T, Tuple, Index,
+            typename is_same<T, typename tuple_element<Index, Tuple>::type>::type>::value };
+};
+
+// simple wrapper
+template <class T, class Tuple>
+struct type_index{
+    enum{ value = type_index_imp<T, Tuple, 0>::value };
+};
+
+int main(){
+    typedef tuple<int, char, void> test_t;
+    std::cout << type_index<int, test_t>::value << std::endl;
+    std::cout << type_index<char, test_t>::value << std::endl;
+    std::cout << type_index<void, test_t>::value << std::endl;
+    std::cout << tuple_size<test_t>::value << std::endl;
+    // std::cout << type_index<int*, test_t>::value << std::endl;
+}
+
+輸出：
+0
+1
+2
+3
+
+最後一行註解拿掉，則顯示：
+tuple.cpp:20: error:  "type_not_found" is not a member of "T"
+
+這樣應該是蠻完整的了。有了這個之後.... 後面還有得做 XD
+至少還需要一個 tuple for_each, 這也會用 template 遞迴展開
+
+--
+ ※ Orign:  群星的眷屬  chance.twbbs.org
+ ◆ Author: godfat From 220-135-28-18.HINET-IP.hinet.net</pre>
+
+end of article...

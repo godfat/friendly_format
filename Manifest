@@ -1,0 +1,11 @@
+CHANGES
+LICENSE
+NOTICE
+README
+Rakefile
+TODO
+lib/friendly_article.rb
+lib/friendly_article/version.rb
+test/sample/complex_article.txt
+test/sample/complex_article_result.txt
+test/test_xhtml_formatter.rb
