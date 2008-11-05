@@ -5,7 +5,7 @@
 &lt;a href="<a href="http://phpbb.godfat.org/viewtopic.php?t=873" title="http://phpbb.godfat.org/viewtopic.php?t=873">http://phpbb.godfat.org/viewtopic.php?t=873</a>">
 測試&lt;/a>
 &lt;a href="<a href="http://phpbb.godfat.org/viewtopic.php?t=873" title="http://phpbb.godfat.org/viewtopic.php?t=873">http://phpbb.godfat.org/viewtopic.php?t=873</a>">
-&lt;img src="<a href="http://phpbb.godfat.org/templates/subSilver/images/logo_phpBB.gif" title="http://phpbb.godfat.org/templates/subSilver/images/logo_phpBB.gif">http://phpbb.godfat.org/templates/subSilver/ima...</a>"/>&lt;/a>
+&lt;img src="<a href="http://phpbb.godfat.org/templates/subSilver/images/logo_phpBB.gif" title="http://phpbb.godfat.org/templates/subSilver/images/logo_phpBB.gif">http://phpbb.godfat.org/templates/subSilver/images/logo_phpBB.gif</a>"/>&lt;/a>
 ※ 引述《godfat (godfat 真常)》之銘言：
 > 3. tuple + traits, 也就是一堆 template 技巧了
 > class Dispatcher{

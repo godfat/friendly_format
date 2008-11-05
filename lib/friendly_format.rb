@@ -1,15 +1,20 @@
 
 require 'set'
+require 'friendly_format/set_common'
 
 # 2008-05-09 godfat
 module FriendlyFormat
   module_function
-  def format_article html, *allowed_tags
-    require 'hpricot'
-
-    allowed_tags = allowed_tags.to_set
-    FriendlyFormat.format_article_elems Hpricot.parse(
-      FriendlyFormat.escape_all_inside_pre(html, allowed_tags)), allowed_tags
+  def format_article html, *args
+    FriendlyFormat.format_article_entrance(html,
+      args.inject(Set.new){ |allowed_tags, arg|
+        case arg
+          when Symbol; allowed_tags << arg
+          when Set;    allowed_tags += arg
+          else; raise(TypeError.new("expected Symbol or Set, got #{arg.class}"))
+        end
+        allowed_tags
+      })
   end
 
   def format_autolink html, attrs = {}
@@ -74,7 +79,7 @@ module FriendlyFormat
   end
 
   private
-  def self.trim text, length = 50
+  def self.trim text, length = 75
     # Use +3 for '...' string length.
     if text.size <= 3
       '...'
@@ -93,6 +98,11 @@ module FriendlyFormat
       # is there any other way to get $1?
       "<pre>#{FriendlyFormat.escape_lt(FriendlyFormat.escape_amp($1))}</pre>"
     }
+  end
+  def self.format_article_entrance html, allowed_tags = Set.new
+    require 'hpricot'
+    FriendlyFormat.format_article_elems(Hpricot.parse(
+      FriendlyFormat.escape_all_inside_pre(html, allowed_tags)), allowed_tags)
   end
   def self.format_article_elems elems, allowed_tags = Set.new, no_format_newline = false
     elems.children.map{ |e|

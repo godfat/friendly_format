@@ -4,5 +4,7 @@
     gem install bones
     http://codeforpeople.rubyforge.org/bones/
 
+* test cases were written in mini-test.
+
 * there's a regular expression was extracted from drupal,
   and translated from php.

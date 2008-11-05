@@ -71,7 +71,7 @@ http://www.amazon.co.jp/%E3%80%8C%E7%84%94~%E3%83%9B%E3%83%A0%E3%83%A9%E3%80%8D~
 
     assert_equal \
 'XDDDD
-<a href="http://www.amazon.co.jp/%E3%80%8C%E7%84%94~%E3%83%9B%E3%83%A0%E3%83%A9%E3%80%8D~Ar-tonelico2-hymmnos-concert-Side-%E7%B4%85~/dp/B000VKZL30/ref=pd_sbs_sw_img_2" title="http://www.amazon.co.jp/%E3%80%8C%E7%84%94~%E3%83%9B%E3%83%A0%E3%83%A9%E3%80%8D~Ar-tonelico2-hymmnos-concert-Side-%E7%B4%85~/dp/B000VKZL30/ref=pd_sbs_sw_img_2">http://www.amazon.co.jp/%E3%80%8C%E7%84%94~%E3%...</a> orz', s = format_autolink(str)
+<a href="http://www.amazon.co.jp/%E3%80%8C%E7%84%94~%E3%83%9B%E3%83%A0%E3%83%A9%E3%80%8D~Ar-tonelico2-hymmnos-concert-Side-%E7%B4%85~/dp/B000VKZL30/ref=pd_sbs_sw_img_2" title="http://www.amazon.co.jp/%E3%80%8C%E7%84%94~%E3%83%9B%E3%83%A0%E3%83%A9%E3%80%8D~Ar-tonelico2-hymmnos-concert-Side-%E7%B4%85~/dp/B000VKZL30/ref=pd_sbs_sw_img_2">http://www.amazon.co.jp/%E3%80%8C%E7%84%94~%E3%83%9B%E3%83%A0%E3%83%A9%E...</a> orz', s = format_autolink(str)
     assert_equal s, format_autolink_regexp(str)
   end
   def test_img_src
@@ -87,7 +87,7 @@ http://www.amazon.co.jp/%E3%80%8C%E7%84%94~%E3%83%9B%E3%83%A0%E3%83%A9%E3%80%8D~
   def test_wikipedia_persent
     str = 'http://en.wikipedia.org/wiki/Haskell_%28programming_language%29'
     assert_equal \
-'<a href="http://en.wikipedia.org/wiki/Haskell_%28programming_language%29" title="http://en.wikipedia.org/wiki/Haskell_%28programming_language%29">http://en.wikipedia.org/wiki/Haskell_%28program...</a>', s = format_autolink(str)
+'<a href="http://en.wikipedia.org/wiki/Haskell_%28programming_language%29" title="http://en.wikipedia.org/wiki/Haskell_%28programming_language%29">http://en.wikipedia.org/wiki/Haskell_%28programming_language%29</a>', s = format_autolink(str)
     assert_equal s, format_autolink_regexp(str)
   end
   def test_wikipedia_parentheses
@@ -121,9 +121,9 @@ http://www.amazon.co.jp/%E3%80%8C%E7%84%94~%E3%83%9B%E3%83%A0%E3%83%A9%E3%80%8D~
     assert_equal 'orz&lt;img>asd', format_article(str)
   end
   def test_trim_url
-    str = 'test with http://8901234567890123456789012345678901234567890.com'
+    str = 'test with http://890123456789012345678901234567890123456789012345678901234567890123456789.com'
 
-    assert_equal 'test with <a href="http://8901234567890123456789012345678901234567890.com" title="http://8901234567890123456789012345678901234567890.com">http://8901234567890123456789012345678901234567...</a>', s = format_article(str)
+    assert_equal 'test with <a href="http://890123456789012345678901234567890123456789012345678901234567890123456789.com" title="http://890123456789012345678901234567890123456789012345678901234567890123456789.com">http://89012345678901234567890123456789012345678901234567890123456789012...</a>', s = format_article(str)
     assert_equal s, format_autolink_regexp(str)
   end
   def test_escape_html
@@ -133,12 +133,36 @@ http://www.amazon.co.jp/%E3%80%8C%E7%84%94~%E3%83%9B%E3%83%A0%E3%83%A9%E3%80%8D~
     assert_equal str, format_article(str)
   end
   def test_html_with_pre_and_newline2br
-    assert_equal File.open('test/sample/complex_article_result.txt').read,
-      format_article(File.open('test/sample/complex_article.txt').read, :pre)
+    result = File.read('test/sample/complex_article_result.txt')
+    input  = File.read('test/sample/complex_article.txt')
+
+    assert_equal result, format_article(input, :pre)
+    assert_equal result, format_article(input, FriendlyForamt::SetCommon.new)
   end
   def test_simple_link
     s = '今天是我一歲生日 <a href="http://godfat.org/" title="http://godfat.org/">http://godfat.org/</a> 真的嗎？'
     assert_equal s, format_article(s, :a)
     assert_equal s, format_autolink_regexp(s)
+  end
+  def test_extra_xd_at_tail
+    input = '<img style="float: right;" src="http://flolac.iis.sinica.edu.tw/lambdawan/sites/default/files/ruby.png.thumb.jpg"/>
+<a href="http://www.ruby-forum.com/topic/169911">JRuby 1.1.5 Released</a>
+<a href="http://jruby.codehaus.org/">JRuby</a> 是用 Java 寫成的 Ruby interpreter/compiler.
+原本 JRuby 只是普通的 open source project, 後來因為 <a href="http://www.sun.com/">Sun Microsystem</a>,
+也就是 Java 的開發公司，看好 JRuby, 於是僱用 JRuby team,
+full time 開發 JRuby. 後來 JRuby 在各方面都快速大幅成長，
+尤其效能有了不可思議的大幅提昇，可能是 Sun 有一些撇步沒有公開吧。
+
+效能大幅提昇之後，JRuby 開發沒有停緩，接下來是非常大量的相容性提昇。
+也從原本僅支援 interpret mode 到後來也支援 just in time 與 ahead of time 的
+compilation mode. 非常驚人的開發速度。
+<zzz><xd>
+此外，其中一位開發者，<a href="http://blog.headius.com/">Charles Nutter</a> 也經常參與 <a href="http://www.ruby-forum.com/forum/14">ruby-core</a> 的討論，
+對於 Ruby 的開發頗有貢獻。'
+
+    expected = '<img src="http://flolac.iis.sinica.edu.tw/lambdawan/sites/default/files/ruby.png.thumb.jpg" style="float: right;" /><br /><a href="http://www.ruby-forum.com/topic/169911">JRuby 1.1.5 Released</a><br /><a href="http://jruby.codehaus.org/">JRuby</a> 是用 Java 寫成的 Ruby interpreter/compiler.<br />原本 JRuby 只是普通的 open source project, 後來因為 <a href="http://www.sun.com/">Sun Microsystem</a>,<br />也就是 Java 的開發公司，看好 JRuby, 於是僱用 JRuby team,<br />full time 開發 JRuby. 後來 JRuby 在各方面都快速大幅成長，<br />尤其效能有了不可思議的大幅提昇，可能是 Sun 有一些撇步沒有公開吧。<br /><br />效能大幅提昇之後，JRuby 開發沒有停緩，接下來是非常大量的相容性提昇。<br />也從原本僅支援 interpret mode 到後來也支援 just in time 與 ahead of time 的<br />compilation mode. 非常驚人的開發速度。<br /><zzz>&lt;xd><br />此外，其中一位開發者，<a href="http://blog.headius.com/">Charles Nutter</a> 也經常參與 <a href="http://www.ruby-forum.com/forum/14">ruby-core</a> 的討論，<br />對於 Ruby 的開發頗有貢獻。&lt;/xd></zzz>'
+
+    assert_equal expected, format_article(input, FriendlyForamt::SetCommon.new, :zzz)
+
   end
 end
