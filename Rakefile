@@ -7,7 +7,7 @@ rescue LoadError
   load 'tasks/setup.rb'   # this line should already be there
 end
 
-PROJ.name = 'friendly_article'
+PROJ.name = 'friendly_format'
 # supress warnings, there's too many warnings in dm-core
 PROJ.ruby_opts.delete '-w'
 

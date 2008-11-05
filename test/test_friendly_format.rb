@@ -4,11 +4,11 @@ require 'rubygems'
 require 'minitest/unit'
 MiniTest::Unit.autorun
 
-require 'friendly_article'
+require 'friendly_format'
 
 # 2008-05-09 godfat
-class TestXhtmlFormatter < MiniTest::Unit::TestCase
-  include FriendlyArticle
+class TestFriendlyFormat < MiniTest::Unit::TestCase
+  include FriendlyFormat
 
   def test_article
     str = 

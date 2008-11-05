@@ -4,8 +4,9 @@ NOTICE
 README
 Rakefile
 TODO
-lib/friendly_article.rb
-lib/friendly_article/version.rb
+friendly_format.gemspec
+lib/friendly_format.rb
+lib/friendly_format/version.rb
 test/sample/complex_article.txt
 test/sample/complex_article_result.txt
-test/test_xhtml_formatter.rb
+test/test_friendly_format.rb

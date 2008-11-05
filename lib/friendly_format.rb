@@ -2,14 +2,14 @@
 require 'set'
 
 # 2008-05-09 godfat
-module FriendlyArticle
+module FriendlyFormat
   module_function
   def format_article html, *allowed_tags
     require 'hpricot'
 
     allowed_tags = allowed_tags.to_set
-    FriendlyArticle.format_article_elems Hpricot.parse(
-      FriendlyArticle.escape_all_inside_pre(html, allowed_tags)), allowed_tags
+    FriendlyFormat.format_article_elems Hpricot.parse(
+      FriendlyFormat.escape_all_inside_pre(html, allowed_tags)), allowed_tags
   end
 
   def format_autolink html, attrs = {}
@@ -30,7 +30,7 @@ module FriendlyArticle
     " #{text}".gsub(%r{(<p>|<li>|<br\s*/?>|[ \n\r\t\(])((http://|https://|ftp://|mailto:|smb://|afp://|file://|gopher://|news://|ssl://|sslv2://|sslv3://|tls://|tcp://|udp://)([a-zA-Z0-9@:%_+*~#?&=.,/;-]*[a-zA-Z0-9@:%_+*~#&=/;-]))([.,?!]*?)(?=(</p>|</li>|<br\s*/?>|[ \n\r\t\)])?)}i){ |match|
       match = [match, $1, $2, $3, $4, $5]
       match[2] = match[2] # escape something here
-      caption = FriendlyArticle.trim match[2]
+      caption = FriendlyFormat.trim match[2]
       # match[2] = sanitize match[2]
       match[1]+'<a href="'+match[2]+'" title="'+match[2]+"\"#{attrs}>"+
         caption+'</a>'+match[5]
@@ -42,7 +42,7 @@ module FriendlyArticle
     gsub(%r{(<p>|<li>|[ \n\r\t\(])(www\.[a-zA-Z0-9@:%_+*~#?&=.,/;-]*[a-zA-Z0-9@:%_+~#\&=/;-])([.,?!]*?)(?=(</p>|</li>|<br\s*/?>|[ \n\r\t\)]))}i){ |match|
       match = [match, $1, $2, $3, $4, $5]
       match[2] = match[2] # escape something here
-      caption = FriendlyArticle.trim match[2]
+      caption = FriendlyFormat.trim match[2]
       # match[2] = sanitize match[2]
       match[1]+'<a href="http://'+match[2]+'" title="http://'+match[2]+"\"#{attrs}>"+
         caption+'</a>'+match[3]
@@ -56,7 +56,7 @@ module FriendlyArticle
 %r{((http://|https://|ftp://|mailto:|smb://|afp://|file://|gopher://|news://|ssl://|sslv2://|sslv3://|tls://|tcp://|udp://|www\.)([a-zA-Z0-9@:%_+*~#?&=.,/;-]*[a-zA-Z0-9@:%_+*~#&=/;-]))([.,?!]*?)}i){ |match|
       url = $1 # is there any other way to get this variable?
 
-      caption = FriendlyArticle.trim url
+      caption = FriendlyFormat.trim url
       attrs = attrs.map{ |k,v| " #{k}=\"#{v}\""}.join
 
       # Match www domains/addresses.
@@ -91,7 +91,7 @@ module FriendlyArticle
     html.gsub(%r{<pre>(.*)</pre>}mi){
       # stop escaping for '>' because drupal's url filter would make &gt; into url...
       # is there any other way to get $1?
-      "<pre>#{FriendlyArticle.escape_lt(FriendlyArticle.escape_amp($1))}</pre>"
+      "<pre>#{FriendlyFormat.escape_lt(FriendlyFormat.escape_amp($1))}</pre>"
     }
   end
   def self.format_article_elems elems, allowed_tags = Set.new, no_format_newline = false
@@ -108,16 +108,16 @@ module FriendlyArticle
             e.to_html
           else
             e.stag.inspect +
-              FriendlyArticle.format_article_elems(e, allowed_tags, e.stag.name == 'pre') +
+              FriendlyFormat.format_article_elems(e, allowed_tags, e.stag.name == 'pre') +
               (e.etag || Hpricot::ETag.new(e.stag.name)).inspect
           end
         else
           if e.empty?
-            FriendlyArticle.escape_lt(e.stag.inspect)
+            FriendlyFormat.escape_lt(e.stag.inspect)
           else
-            FriendlyArticle.escape_lt(e.stag.inspect) +
-              FriendlyArticle.format_article_elems(e, allowed_tags) +
-              FriendlyArticle.escape_lt((e.etag || Hpricot::ETag.new(e.stag.name)).inspect)
+            FriendlyFormat.escape_lt(e.stag.inspect) +
+              FriendlyFormat.format_article_elems(e, allowed_tags) +
+              FriendlyFormat.escape_lt((e.etag || Hpricot::ETag.new(e.stag.name)).inspect)
           end
         end
       end

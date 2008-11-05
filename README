@@ -1,10 +1,10 @@
-= pagify 0.5
+= friendly_format 0.5
 by Lin Jen-Shin (a.k.a. godfat-真常[http://godfat.org])
   godfat (XD) godfat.org
 
 == LINKS:
 
-* github-project[http://github.com/godfat/friendly_article]
+* github-project[http://github.com/godfat/friendly_format]
 * rubyforge-project[http://rubyforge.org/projects/ludy]
 
 == DESCRIPTION:
@@ -17,7 +17,7 @@ by Lin Jen-Shin (a.k.a. godfat-真常[http://godfat.org])
 
 == INSTALL:
 
-* sudo gem install friendly_article
+* sudo gem install friendly_format
 
 == LICENSE:
 
