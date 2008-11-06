@@ -1,6 +1,7 @@
 
 require 'set'
 require 'friendly_format/set_common'
+require 'friendly_format/set_strict'
 
 # 2008-05-09 godfat
 module FriendlyFormat
