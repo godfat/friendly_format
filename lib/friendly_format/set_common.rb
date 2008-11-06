@@ -1,5 +1,5 @@
 
-module FriendlyForamt
+module FriendlyFormat
   # reference:
   # http://www.w3.org/TR/1999/REC-html401-19991224/index/elements.html
   class SetCommon < Set

@@ -1,5 +1,5 @@
 
-module FriendlyForamt
+module FriendlyFormat
   class SetStrict < Set
     def initialize
       super([ :a, :b, :code, :del, :em, :font,
