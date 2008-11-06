@@ -6,6 +6,8 @@ Rakefile
 TODO
 friendly_format.gemspec
 lib/friendly_format.rb
+lib/friendly_format/set_common.rb
+lib/friendly_format/set_strict.rb
 lib/friendly_format/version.rb
 test/sample/complex_article.txt
 test/sample/complex_article_result.txt
