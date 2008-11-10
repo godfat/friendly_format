@@ -96,7 +96,7 @@ module FriendlyFormat
     html = html + '</pre>' unless html =~ %r{</pre>}i
     html.gsub(%r{<pre>(.*)</pre>}mi){
       # stop escaping for '>' because drupal's url filter would make &gt; into url...
-      # is there any other way to get $1?
+      # is there any other way to get matched group?
       "<pre>#{FriendlyFormat.escape_lt(FriendlyFormat.escape_amp($1))}</pre>"
     }
   end
