@@ -6,6 +6,10 @@ require 'friendly_format/set_strict'
 # 2008-05-09 godfat
 module FriendlyFormat
   module_function
+  # format entire article for you, passing allowed tags to it.
+  # you can use Set or Symbol to specify which tags would be allowed.
+  # default was no tags at all, all tags would be escaped.
+  # it uses Hpricot to parse input.
   def format_article html, *args
     FriendlyFormat.format_article_entrance(html,
       args.inject(Set.new){ |allowed_tags, arg|
@@ -18,6 +22,10 @@ module FriendlyFormat
       })
   end
 
+  # automaticly add "a href" tag on text starts from
+  # http/ftp/mailto/etc protocol. use Hpricot to parse and
+  # regexp translated from drupal to find where's the target.
+  # it uses simplified regexp to do the task. see format_url.
   def format_autolink html, attrs = {}
     require 'hpricot'
 
@@ -30,6 +38,8 @@ module FriendlyFormat
   end
 
   # translated from drupal-6.2/modules/filter/filter.module
+  # same as format_autolink, but doesn't use Hpricot,
+  # use only regexp.
   def format_autolink_regexp text, attrs = {}
     attrs = attrs.map{ |k,v| " #{k}=\"#{v}\""}.join
     # Match absolute URLs.
@@ -55,6 +65,9 @@ module FriendlyFormat
     }[1..-1]
   end
 
+  # same as format_autolink_regexp, but it's simplified and
+  # cannot process text composed with html and plain text.
+  # used in format_autolink.
   def format_url text, attrs = {}
     # translated from drupal-6.2/modules/filter/filter.module
     # Match absolute URLs.
@@ -73,6 +86,7 @@ module FriendlyFormat
             '<a href="mailto:\1">\1</a>')
   end
 
+  # convert newline character(s) to <br />
   def format_newline text
     # windows: \r\n
     # mac os 9: \r
@@ -80,6 +94,7 @@ module FriendlyFormat
   end
 
   private
+  # extract it to public?
   def self.trim text, length = 75
     # Use +3 for '...' string length.
     if text.size <= 3
@@ -90,6 +105,8 @@ module FriendlyFormat
       text
     end
   end
+
+  # perhaps we should escape all inside code instead of pre?
   def self.escape_all_inside_pre html, allowed_tags
     return html unless allowed_tags.member? :pre
     # don't bother nested pre, because we escape all tags in pre
@@ -100,11 +117,15 @@ module FriendlyFormat
       "<pre>#{FriendlyFormat.escape_lt(FriendlyFormat.escape_amp($1))}</pre>"
     }
   end
+
+  # recursion entrance
   def self.format_article_entrance html, allowed_tags = Set.new
     require 'hpricot'
     FriendlyFormat.format_article_elems(Hpricot.parse(
       FriendlyFormat.escape_all_inside_pre(html, allowed_tags)), allowed_tags)
   end
+
+  # recursion
   def self.format_article_elems elems, allowed_tags = Set.new, no_format_newline = false
     elems.children.map{ |e|
       if e.kind_of?(Hpricot::Text)
@@ -134,10 +155,17 @@ module FriendlyFormat
       end
     }.join
   end
+
   def self.escape_amp text
     text.gsub('&', '&amp;')
   end
+
+  # i cannot find a way to escape both lt and gt,
+  # so it's a trick that just escape lt and no browser
+  # would treat complex lt and gt structure to be a tag
+  # wraping content.
   def self.escape_lt text
     text.gsub('<', '&lt;')
   end
+
 end

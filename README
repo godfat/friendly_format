@@ -9,11 +9,18 @@ by Lin Jen-Shin (a.k.a. godfat-真常[http://godfat.org])
 
 == DESCRIPTION:
 
-== FEATURES:
+ make user input be valid xhtml and format it with gsub("\n", "<br/>") etc.
+ you can partially allow some tags and don't escape them.
 
 == SYNOPSIS:
 
+ FriendlyFormat.format_article(text, :a, :img)
+ FriendlyFormat.format_article(text, FriendlyFormat::SetStrict.new)
+ FriendlyFormat.format_article(text, FriendlyFormat::SetCommon.new)
+
 == REQUIREMENTS:
+
+ * hpricot 0.6 and later
 
 == INSTALL:
 

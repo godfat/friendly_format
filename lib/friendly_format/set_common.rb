@@ -2,6 +2,8 @@
 module FriendlyFormat
   # reference:
   # http://www.w3.org/TR/1999/REC-html401-19991224/index/elements.html
+  # allow most tags to use, use it in weblog or somewhere only
+  # a few people have permission to post or edit.
   class SetCommon < Set
     def initialize
       super([ :a, :area, :b, :big, :blockquote, :br,
