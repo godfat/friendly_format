@@ -2,3 +2,5 @@
 * make format_article take an optional size argument that indicates
   how long should the result be. it should take &lt; as 1 character and
   <a href="/">嗯</a> as 1 character too. never cut out tag and unicode.
+
+* an executable to format text from stdin to stdout.

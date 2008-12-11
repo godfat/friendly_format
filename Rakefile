@@ -9,7 +9,7 @@ end
 
 PROJ.name = 'friendly_format'
 # supress warnings, there's too many warnings in dm-core
-PROJ.ruby_opts.delete '-w'
+# PROJ.ruby_opts.delete '-w'
 
 PROJ.gem.dependencies << ['hpricot', '>=0.6.0']
 PROJ.gem.development_dependencies << ['minitest', '>=1.3.0']

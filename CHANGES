@@ -1,6 +1,10 @@
 = pagify changes history
 
-== friendly_article 0.5 / 2008-11-05
+== friendly_format 0.5.1 / 2008-12-11
+
+* first release to rubyforge
+
+== friendly_format 0.5 / 2008-11-05
 
 * 1 major enhancement
   * Birthday!
