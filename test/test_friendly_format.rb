@@ -11,7 +11,7 @@ class TestFriendlyFormat < MiniTest::Unit::TestCase
   include FriendlyFormat
 
   def test_article
-    str = 
+    str =
 ' http://friends.roodo.com/forum/viewTopic/10170
 用 Haskell 寫成的名軟體？
 
@@ -75,7 +75,7 @@ http://www.amazon.co.jp/%E3%80%8C%E7%84%94~%E3%83%9B%E3%83%A0%E3%83%A9%E3%80%8D~
     assert_equal s, format_autolink_regexp(str)
   end
   def test_img_src
-    str = 
+    str =
 'Thirst for Knowledge
 <img src="http://friends.roodo.com/images/diary_photos_large/15386/MjMyNjYtdGhpcnN0X2Zvcl9rbm93bGVkZ2U=.jpg" />
 
@@ -133,7 +133,7 @@ http://www.amazon.co.jp/%E3%80%8C%E7%84%94~%E3%83%9B%E3%83%A0%E3%83%A9%E3%80%8D~
     assert_equal str, format_article(str)
   end
   def test_html_with_pre_and_newline2br
-    result = File.read('test/sample/complex_article_result.txt')
+    result = File.read('test/sample/complex_article_result.txt').chop
     input  = File.read('test/sample/complex_article.txt')
 
     assert_equal result, format_article(input, :pre)
