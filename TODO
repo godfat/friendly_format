@@ -1,4 +1,6 @@
 = friendly_article todo list
+* add support for nokogiri as well (i wonder if rexml can fix html)
+
 * make format_article take an optional size argument that indicates
   how long should the result be. it should take &lt; as 1 character and
   <a href="/">嗯</a> as 1 character too. never cut out tag and unicode.
