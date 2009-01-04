@@ -39,10 +39,7 @@ module FriendlyFormat
   # it uses simplified regexp to do the task. see format_url.
   def format_autolink html, attrs = {}
     doc = FriendlyFormat.adapter.parse(html)
-    doc.children.each{ |c|
-      next unless FriendlyFormat.adapter.text?(c)
-      c.content = format_url(c.content, attrs)
-    }
+    FriendlyFormat.format_autolink_rec(doc, attrs)
     FriendlyFormat.adapter.to_html(doc)
   end
 
@@ -74,27 +71,6 @@ module FriendlyFormat
     }[1..-1]
   end
 
-  # same as format_autolink_regexp, but it's simplified and
-  # cannot process text composed with html and plain text.
-  # used in format_autolink.
-  def format_url text, attrs = {}
-    # translated from drupal-6.2/modules/filter/filter.module
-    # Match absolute URLs.
-    text.gsub(
-%r{((http://|https://|ftp://|mailto:|smb://|afp://|file://|gopher://|news://|ssl://|sslv2://|sslv3://|tls://|tcp://|udp://|www\.)([a-zA-Z0-9@:%_+*~#?&=.,/;-]*[a-zA-Z0-9@:%_+*~#&=/;-]))([.,?!]*?)}i){ |match|
-      url = $1 # is there any other way to get this variable?
-
-      caption = FriendlyFormat.trim url
-      attrs = attrs.map{ |k,v| " #{k}=\"#{v}\""}.join
-
-      # Match www domains/addresses.
-      url = "http://#{url}" unless url =~ %r{^http://}
-      "<a href=\"#{url}\" title=\"#{url}\"#{attrs}>#{caption}</a>"
-    # Match e-mail addresses.
-    }.gsub( %r{([A-Za-z0-9._-]+@[A-Za-z0-9._+-]+\.[A-Za-z]{2,4})([.,?!]*?)}i,
-            '<a href="mailto:\1">\1</a>')
-  end
-
   # convert newline character(s) to <br />
   def format_newline text
     # windows: \r\n
@@ -102,81 +78,127 @@ module FriendlyFormat
     text.gsub("\r\n", "\n").tr("\r", "\n").gsub("\n", '<br />')
   end
 
-  private
-  # extract it to public?
-  def self.trim text, length = 75
-    # Use +3 for '...' string length.
-    if text.size <= 3
-      '...'
-    elsif text.size > length
-      "#{text[0...length-3]}..."
-    else
-      text
-    end
-  end
 
-  # perhaps we should escape all inside code instead of pre?
-  def self.escape_all_inside_pre html, allowed_tags
-    return html unless allowed_tags.member? :pre
-    # don't bother nested pre, because we escape all tags in pre
-    html = html + '</pre>' unless html =~ %r{</pre>}i
-    html.gsub(%r{<pre>(.*)</pre>}mi){
-      # stop escaping for '>' because drupal's url filter would make &gt; into url...
-      # is there any other way to get matched group?
-      "<pre>#{FriendlyFormat.escape_lt(FriendlyFormat.escape_amp($1))}</pre>"
-    }
-  end
+  # private below
 
-  # recursion entrance
-  def self.format_article_entrance html, allowed_tags = Set.new
-    FriendlyFormat.format_article_elems(FriendlyFormat.adapter.parse(
-      FriendlyFormat.escape_all_inside_pre(html, allowed_tags)), allowed_tags)
-  end
-
-  # recursion
-  def self.format_article_elems elems, allowed_tags = Set.new, no_format_newline = false
-    elems.children.map{ |e|
-      if FriendlyFormat.adapter.text?(e)
-        if no_format_newline
-          format_url(e.content)
-        else
-          format_newline format_url(e.content)
-        end
-
-      elsif FriendlyFormat.adapter.element?(e)
-        if allowed_tags.member?(e.name.to_sym)
-          if FriendlyFormat.adapter.empty?(e) || e.name == 'a'
-            e.to_html
-          else
-            FriendlyFormat.adapter.tag_begin(e) +
-            FriendlyFormat.format_article_elems(
-              e, allowed_tags, FriendlyFormat.adapter.tag_name(e) == 'pre') +
-            FriendlyFormat.adapter.tag_end(e)
-          end
-        else
-          if FriendlyFormat.adapter.empty?(e)
-            FriendlyFormat.escape_lt(FriendlyFormat.adapter.tag_begin(e))
-          else
-            FriendlyFormat.escape_lt(FriendlyFormat.adapter.tag_begin(e)) +
-            FriendlyFormat.format_article_elems(e, allowed_tags) +
-            FriendlyFormat.escape_lt(FriendlyFormat.adapter.tag_end(e))
-          end
-        end
-
+  class << self
+    # extract it to public?
+    # @api private
+    def trim text, length = 75
+      # Use +3 for '...' string length.
+      if text.size <= 3
+        '...'
+      elsif text.size > length
+        "#{text[0...length-3]}..."
+      else
+        text
       end
-    }.join
-  end
+    end
 
-  def self.escape_amp text
-    text.gsub('&', '&amp;')
-  end
+    # same as format_autolink_regexp, but it's simplified and
+    # cannot process text composed with html and plain text.
+    # used in format_autolink.
+    # @api private
+    def format_url text, attrs = {}
+      # translated from drupal-6.2/modules/filter/filter.module
+      # Match absolute URLs.
+      text.gsub(
+  %r{((http://|https://|ftp://|mailto:|smb://|afp://|file://|gopher://|news://|ssl://|sslv2://|sslv3://|tls://|tcp://|udp://|www\.)([a-zA-Z0-9@:%_+*~#?&=.,/;-]*[a-zA-Z0-9@:%_+*~#&=/;-]))([.,?!]*?)}i){ |match|
+        url = $1 # is there any other way to get this variable?
 
-  # i cannot find a way to escape both lt and gt,
-  # so it's a trick that just escape lt and no browser
-  # would treat complex lt and gt structure to be a tag
-  # wraping content.
-  def self.escape_lt text
-    text.gsub('<', '&lt;')
-  end
+        caption = trim(url)
+        attrs = attrs.map{ |k,v| " #{k}=\"#{v}\""}.join
 
+        # Match www domains/addresses.
+        url = "http://#{url}" unless url =~ %r{^http://}
+        "<a href=\"#{url}\" title=\"#{url}\"#{attrs}>#{caption}</a>"
+      # Match e-mail addresses.
+      }.gsub( %r{([A-Za-z0-9._-]+@[A-Za-z0-9._+-]+\.[A-Za-z]{2,4})([.,?!]*?)}i,
+              '<a href="mailto:\1">\1</a>')
+    end
+
+    # perhaps we should escape all inside code instead of pre?
+    # @api private
+    def escape_all_inside_pre html, allowed_tags
+      return html unless allowed_tags.member? :pre
+      # don't bother nested pre, because we escape all tags in pre
+      html = html + '</pre>' unless html =~ %r{</pre>}i
+      html.gsub(%r{<pre>(.*)</pre>}mi){
+        # stop escaping for '>' because drupal's url filter would make &gt; into url...
+        # is there any other way to get matched group?
+        "<pre>#{escape_lt(escape_amp($1))}</pre>"
+      }
+    end
+
+    # @api private
+    def format_autolink_rec elem, attrs = {}
+      elem.children.each{ |c|
+        if adapter.text?(c)
+          c.content = format_url(c.content, attrs)
+
+        elsif adapter.element?(c)
+          format_autolink_rec(c, attrs)
+
+        end
+
+      }
+    end
+
+    # recursion entrance
+    # @api private
+    def format_article_entrance html, allowed_tags = Set.new
+      format_article_rec(adapter.parse(
+        escape_all_inside_pre(html, allowed_tags)), allowed_tags)
+    end
+
+    # recursion
+    # @api private
+    def format_article_rec elem, allowed_tags = Set.new, no_format_newline = false
+      elem.children.map{ |e|
+        if adapter.text?(e)
+          if no_format_newline
+            format_url(e.content)
+          else
+            format_newline format_url(e.content)
+          end
+
+        elsif adapter.element?(e)
+          if allowed_tags.member?(e.name.to_sym)
+            if adapter.empty?(e) || e.name == 'a'
+              e.to_s
+            else
+              adapter.tag_begin(e) +
+              format_article_rec(
+                e, allowed_tags, adapter.tag_name(e) == 'pre') +
+              adapter.tag_end(e)
+            end
+          else
+            if adapter.empty?(e)
+              escape_lt(adapter.tag_begin(e))
+            else
+              escape_lt(adapter.tag_begin(e)) +
+              format_article_rec(e, allowed_tags) +
+              escape_lt(adapter.tag_end(e))
+            end
+          end
+
+        end
+      }.to_s
+    end
+
+    # @api private
+    def escape_amp text
+      text.gsub('&', '&amp;')
+    end
+
+    # i cannot find a way to escape both lt and gt,
+    # so it's a trick that just escape lt and no browser
+    # would treat complex lt and gt structure to be a tag
+    # wraping content.
+    # @api private
+    def escape_lt text
+      text.gsub('<', '&lt;')
+    end
+
+  end
 end
