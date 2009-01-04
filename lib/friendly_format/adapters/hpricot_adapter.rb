@@ -2,7 +2,7 @@
 require 'hpricot'
 
 module FriendlyFormat
-  module HpricotAdapter
+  class HpricotAdapter
     class << self
 
       def parse html
