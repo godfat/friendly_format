@@ -6,6 +6,8 @@ MiniTest::Unit.autorun
 
 require 'friendly_format'
 
+# FriendlyFormat.adapter = FriendlyFormat::NokogiriAdapter
+
 # 2008-05-09 godfat
 class TestFriendlyFormat < MiniTest::Unit::TestCase
   include FriendlyFormat

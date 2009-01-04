@@ -5,6 +5,17 @@ require 'friendly_format/set_strict'
 
 # 2008-05-09 godfat
 module FriendlyFormat
+  autoload(:LibxmlAdapter,   'friendly_format/adapters/libxml_adapter')
+  autoload(:HpricotAdapter,  'friendly_format/adapters/hpricot_adapter')
+  autoload(:NokogiriAdapter, 'friendly_format/adapters/nokogiri_adapter')
+
+  class << self
+    attr_writer(:adapter)
+    def adapter
+      @adapter ||= HpricotAdapter
+    end
+  end
+
   module_function
   # format entire article for you, passing allowed tags to it.
   # you can use Set or Symbol to specify which tags would be allowed.
@@ -27,14 +38,12 @@ module FriendlyFormat
   # regexp translated from drupal to find where's the target.
   # it uses simplified regexp to do the task. see format_url.
   def format_autolink html, attrs = {}
-    require 'hpricot'
-
-    doc = Hpricot.parse html
-    doc.each_child{ |c|
-      next unless c.kind_of?(Hpricot::Text)
-      c.content = format_url c.content, attrs
+    doc = FriendlyFormat.adapter.parse(html)
+    doc.children.each{ |c|
+      next unless FriendlyFormat.adapter.text?(c)
+      c.content = format_url(c.content, attrs)
     }
-    doc.to_html
+    FriendlyFormat.adapter.to_html(doc)
   end
 
   # translated from drupal-6.2/modules/filter/filter.module
@@ -120,38 +129,40 @@ module FriendlyFormat
 
   # recursion entrance
   def self.format_article_entrance html, allowed_tags = Set.new
-    require 'hpricot'
-    FriendlyFormat.format_article_elems(Hpricot.parse(
+    FriendlyFormat.format_article_elems(FriendlyFormat.adapter.parse(
       FriendlyFormat.escape_all_inside_pre(html, allowed_tags)), allowed_tags)
   end
 
   # recursion
   def self.format_article_elems elems, allowed_tags = Set.new, no_format_newline = false
     elems.children.map{ |e|
-      if e.kind_of?(Hpricot::Text)
+      if FriendlyFormat.adapter.text?(e)
         if no_format_newline
           format_url(e.content)
         else
           format_newline format_url(e.content)
         end
-      elsif e.kind_of?(Hpricot::Elem)
-        if allowed_tags.member? e.name.to_sym
-          if e.empty? || e.name == 'a'
+
+      elsif FriendlyFormat.adapter.element?(e)
+        if allowed_tags.member?(e.name.to_sym)
+          if FriendlyFormat.adapter.empty?(e) || e.name == 'a'
             e.to_html
           else
-            e.stag.inspect +
-              FriendlyFormat.format_article_elems(e, allowed_tags, e.stag.name == 'pre') +
-              (e.etag || Hpricot::ETag.new(e.stag.name)).inspect
+            FriendlyFormat.adapter.tag_begin(e) +
+            FriendlyFormat.format_article_elems(
+              e, allowed_tags, FriendlyFormat.adapter.tag_name(e) == 'pre') +
+            FriendlyFormat.adapter.tag_end(e)
           end
         else
-          if e.empty?
-            FriendlyFormat.escape_lt(e.stag.inspect)
+          if FriendlyFormat.adapter.empty?(e)
+            FriendlyFormat.escape_lt(FriendlyFormat.adapter.tag_begin(e))
           else
-            FriendlyFormat.escape_lt(e.stag.inspect) +
-              FriendlyFormat.format_article_elems(e, allowed_tags) +
-              FriendlyFormat.escape_lt((e.etag || Hpricot::ETag.new(e.stag.name)).inspect)
+            FriendlyFormat.escape_lt(FriendlyFormat.adapter.tag_begin(e)) +
+            FriendlyFormat.format_article_elems(e, allowed_tags) +
+            FriendlyFormat.escape_lt(FriendlyFormat.adapter.tag_end(e))
           end
         end
+
       end
     }.join
   end
