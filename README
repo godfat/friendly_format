@@ -1,4 +1,4 @@
-= friendly_format 0.5
+= friendly_format 0.6
 by Lin Jen-Shin (a.k.a. godfat-真常[http://godfat.org])
   godfat (XD) godfat.org
 
@@ -18,9 +18,15 @@ by Lin Jen-Shin (a.k.a. godfat-真常[http://godfat.org])
  FriendlyFormat.format_article(text, FriendlyFormat::SetStrict.new)
  FriendlyFormat.format_article(text, FriendlyFormat::SetCommon.new)
 
+ FriendlyFormat.adapter = FriendlyFormat::NokogiriAdapter
+ FriendlyFormat.adapter = FriendlyFormat::LibxmlAdapter
+ FriendlyFormat.adapter = FriendlyFormat::HpricotAdapter # default
+
 == REQUIREMENTS:
 
- * hpricot 0.6 and later
+ * hpricot     >=0.6 or
+ * nokogiri    >=1.1 or
+ * libxml-ruby >=0.9
 
 == INSTALL:
 
