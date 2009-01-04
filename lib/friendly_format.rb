@@ -38,9 +38,8 @@ module FriendlyFormat
   # regexp translated from drupal to find where's the target.
   # it uses simplified regexp to do the task. see format_url.
   def format_autolink html, attrs = {}
-    doc = FriendlyFormat.adapter.parse(html)
-    FriendlyFormat.format_autolink_rec(doc, attrs)
-    FriendlyFormat.adapter.to_html(doc)
+    FriendlyFormat.format_autolink_rec(
+      FriendlyFormat.adapter.parse(html), attrs)
   end
 
   # translated from drupal-6.2/modules/filter/filter.module
@@ -132,16 +131,25 @@ module FriendlyFormat
 
     # @api private
     def format_autolink_rec elem, attrs = {}
-      elem.children.each{ |c|
+      elem.children.map{ |c|
         if adapter.text?(c)
-          c.content = format_url(c.content, attrs)
+          format_url(c.content, attrs)
 
         elsif adapter.element?(c)
-          format_autolink_rec(c, attrs)
+          if adapter.empty?(c)
+            c
+          else
+            adapter.tag_begin(c) +
+            format_autolink_rec(c, attrs) +
+            adapter.tag_end(c)
+          end
+
+        else
+          c
 
         end
 
-      }
+      }.to_s
     end
 
     # recursion entrance
@@ -159,13 +167,13 @@ module FriendlyFormat
           if no_format_newline
             format_url(e.content)
           else
-            format_newline format_url(e.content)
+            format_newline(format_url(e.content))
           end
 
         elsif adapter.element?(e)
           if allowed_tags.member?(e.name.to_sym)
             if adapter.empty?(e) || e.name == 'a'
-              e.to_s
+              e
             else
               adapter.tag_begin(e) +
               format_article_rec(
