@@ -12,8 +12,7 @@ PROJ.name = 'friendly_format'
 # PROJ.ruby_opts.delete '-w'
 
 # PROJ.gem.dependencies << ['hpricot', '>=0.6.0']
-PROJ.gem.development_dependencies << ['minitest',    '>=1.3'] <<
-                                     ['hpricot',     '>=0.6'] <<
+PROJ.gem.development_dependencies << ['hpricot',     '>=0.6'] <<
                                      ['nokogiri',    '>=1.1'] <<
                                      ['libxml-ruby', '>=0.9']
 # PROJ.gem.executables = ["bin/#{PROJ.name}"]

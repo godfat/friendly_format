@@ -1,15 +1,22 @@
 # encoding: utf-8
 
 require 'rubygems'
-require 'minitest/unit'
-MiniTest::Unit.autorun
+
+TestCase = begin
+             require 'minitest/unit'
+             MiniTest::Unit.autorun
+             MiniTest::Unit::TestCase
+           rescue LoadError
+             require 'test/unit'
+             Test::Unit::TestCase
+           end
 
 require 'friendly_format'
 
 # FriendlyFormat.adapter = FriendlyFormat::NokogiriAdapter
 
 # 2008-05-09 godfat
-class TestFriendlyFormat < MiniTest::Unit::TestCase
+class TestFriendlyFormat < TestCase
   include FriendlyFormat
 
   def test_article
