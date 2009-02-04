@@ -1,4 +1,3 @@
-
 # -*- encoding: utf-8 -*-
 
 Gem::Specification.new do |s|
@@ -7,7 +6,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Lin Jen-Shin (a.k.a. godfat \347\234\237\345\270\270)"]
-  s.date = %q{2009-01-05}
+  s.date = %q{2009-02-04}
   s.description = %q{make user input be valid xhtml and format it with gsub("\n", "<br/>") etc. you can partially allow some tags and don't escape them.}
   s.email = %q{godfat (XD) godfat.org}
   s.extra_rdoc_files = ["CHANGES", "LICENSE", "NOTICE", "README", "TODO", "friendly_format.gemspec"]
@@ -26,21 +25,18 @@ Gem::Specification.new do |s|
     s.specification_version = 2
 
     if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
-      s.add_development_dependency(%q<bones>, [">= 2.2.0"])
-      s.add_development_dependency(%q<minitest>, [">= 1.3"])
+      s.add_development_dependency(%q<bones>, [">= 2.4.0"])
       s.add_development_dependency(%q<hpricot>, [">= 0.6"])
       s.add_development_dependency(%q<nokogiri>, [">= 1.1"])
       s.add_development_dependency(%q<libxml-ruby>, [">= 0.9"])
     else
-      s.add_dependency(%q<bones>, [">= 2.2.0"])
-      s.add_dependency(%q<minitest>, [">= 1.3"])
+      s.add_dependency(%q<bones>, [">= 2.4.0"])
       s.add_dependency(%q<hpricot>, [">= 0.6"])
       s.add_dependency(%q<nokogiri>, [">= 1.1"])
       s.add_dependency(%q<libxml-ruby>, [">= 0.9"])
     end
   else
-    s.add_dependency(%q<bones>, [">= 2.2.0"])
-    s.add_dependency(%q<minitest>, [">= 1.3"])
+    s.add_dependency(%q<bones>, [">= 2.4.0"])
     s.add_dependency(%q<hpricot>, [">= 0.6"])
     s.add_dependency(%q<nokogiri>, [">= 1.1"])
     s.add_dependency(%q<libxml-ruby>, [">= 0.9"])
