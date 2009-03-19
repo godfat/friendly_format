@@ -46,7 +46,7 @@ OpenGL, 還有一些 web cgi 之類的東西也有。
 
 現在切入正是時機啊... XD'
 
-    assert_equal \
+    assert(
 ' <a href="http://friends.roodo.com/forum/viewTopic/10170" title="http://friends.roodo.com/forum/viewTopic/10170">http://friends.roodo.com/forum/viewTopic/10170</a>
 用 Haskell 寫成的名軟體？
 
@@ -70,8 +70,8 @@ svn 其實也差不多是要慢慢式微了...
 很多知名 library 都有 haskell binding 了，wxWidgets,
 OpenGL, 還有一些 web cgi 之類的東西也有。
 
-現在切入正是時機啊... XD', s = format_autolink(str)
-    assert_equal s, format_autolink_regexp(str)
+現在切入正是時機啊... XD' == (s = format_autolink(str)))
+    assert(s == format_autolink_regexp(str))
   end
   def test_persent
     str =
@@ -145,8 +145,8 @@ http://www.amazon.co.jp/%E3%80%8C%E7%84%94~%E3%83%9B%E3%83%A0%E3%83%A9%E3%80%8D~
     result = File.read('test/sample/complex_article_result.txt').chop
     input  = File.read('test/sample/complex_article.txt')
 
-    assert_equal result, format_article(input, :pre)
-    assert_equal result, format_article(input, SetCommon.new)
+    assert(result == format_article(input, :pre))
+    assert(result == format_article(input, SetCommon.new))
   end
   def test_simple_link
     s = '今天是我一歲生日 <a href="http://godfat.org/" title="http://godfat.org/">http://godfat.org/</a> 真的嗎？'
@@ -171,7 +171,7 @@ compilation mode. 非常驚人的開發速度。
 
     expected = '<img src="http://flolac.iis.sinica.edu.tw/lambdawan/sites/default/files/ruby.png.thumb.jpg" style="float: right;" /><br /><a href="http://www.ruby-forum.com/topic/169911">JRuby 1.1.5 Released</a><br /><a href="http://jruby.codehaus.org/">JRuby</a> 是用 Java 寫成的 Ruby interpreter/compiler.<br />原本 JRuby 只是普通的 open source project, 後來因為 <a href="http://www.sun.com/">Sun Microsystem</a>,<br />也就是 Java 的開發公司，看好 JRuby, 於是僱用 JRuby team,<br />full time 開發 JRuby. 後來 JRuby 在各方面都快速大幅成長，<br />尤其效能有了不可思議的大幅提昇，可能是 Sun 有一些撇步沒有公開吧。<br /><br />效能大幅提昇之後，JRuby 開發沒有停緩，接下來是非常大量的相容性提昇。<br />也從原本僅支援 interpret mode 到後來也支援 just in time 與 ahead of time 的<br />compilation mode. 非常驚人的開發速度。<br /><zzz>&lt;xd><br />此外，其中一位開發者，<a href="http://blog.headius.com/">Charles Nutter</a> 也經常參與 <a href="http://www.ruby-forum.com/forum/14">ruby-core</a> 的討論，<br />對於 Ruby 的開發頗有貢獻。&lt;/xd></zzz>'
 
-    assert_equal expected, format_article(input, SetCommon.new, :zzz)
+    assert(expected == format_article(input, SetCommon.new, :zzz))
 
   end
 
