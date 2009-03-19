@@ -3,6 +3,10 @@
 == friendly_format 0.6.0 / ?
 
 * added nokogiri and libxml-ruby support.
+* you can explicitly choose adapter, or auto-choose:
+  1. hpricot or falls back to:
+  2. nokogiri or falls back to:
+  3. libxml-ruby
 
 == friendly_format 0.5.1 / 2008-12-11
 
