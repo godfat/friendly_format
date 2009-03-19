@@ -1,4 +1,5 @@
 
+gem 'hpricot', '<0.7'
 require 'hpricot'
 
 module FriendlyFormat
