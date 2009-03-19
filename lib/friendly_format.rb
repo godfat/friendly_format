@@ -22,6 +22,7 @@ module FriendlyFormat
   # default was no tags at all, all tags would be escaped.
   # it uses Hpricot to parse input.
   def format_article html, *args
+    return html if html.strip == ''
     FriendlyFormat.format_article_entrance(html,
       args.inject(Set.new){ |allowed_tags, arg|
         case arg
@@ -38,6 +39,8 @@ module FriendlyFormat
   # regexp translated from drupal to find where's the target.
   # it uses simplified regexp to do the task. see format_url.
   def format_autolink html, attrs = {}
+    return html if html.strip == ''
+
     FriendlyFormat.format_autolink_rec(
       FriendlyFormat.adapter.parse(html), attrs)
   end

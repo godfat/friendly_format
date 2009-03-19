@@ -174,4 +174,10 @@ compilation mode. 非常驚人的開發速度。
     assert_equal expected, format_article(input, SetCommon.new, :zzz)
 
   end
+
+  def test_empty_article
+    assert_equal '', format_article('')
+    assert_equal ' ', format_article(' ')
+    assert_equal 'a', format_article('a')
+  end
 end
