@@ -9,15 +9,11 @@ module FriendlyFormat
       def parse html
         # root is html, children is [body], first is body
         # same as libxml
-        Nokogiri::HTML.parse(html).root.children.first
+        Nokogiri::HTML.parse("<zzz>#{html}</zzz>").root.children.first.children.first
       end
 
-      def element? node
-        node.kind_of?(Nokogiri::XML::Element)
-      end
-
-      def text? node
-        node.kind_of?(Nokogiri::XML::Text)
+      def to_xhtml node
+        node.to_xhtml
       end
 
       def tag_begin node

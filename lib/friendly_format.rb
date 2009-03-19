@@ -178,7 +178,7 @@ module FriendlyFormat
         elsif adapter.element?(e)
           if allowed_tags.member?(e.name.to_sym)
             if adapter.empty?(e) || e.name == 'a'
-              e
+              adapter.to_xhtml(e)
             else
               adapter.tag_begin(e) +
               format_article_rec(

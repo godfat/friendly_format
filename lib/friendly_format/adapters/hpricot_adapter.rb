@@ -10,7 +10,7 @@ module FriendlyFormat
         Hpricot.parse(html)
       end
 
-      def to_html node
+      def to_xhtml node
         node.to_html
       end
 
