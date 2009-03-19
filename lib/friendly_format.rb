@@ -23,6 +23,7 @@ module FriendlyFormat
   # it uses Hpricot to parse input.
   def format_article html, *args
     return html if html.strip == ''
+
     FriendlyFormat.format_article_entrance(html,
       args.inject(Set.new){ |allowed_tags, arg|
         case arg
@@ -134,21 +135,21 @@ module FriendlyFormat
 
     # @api private
     def format_autolink_rec elem, attrs = {}
-      elem.children.map{ |c|
-        if adapter.text?(c)
-          format_url(c.content, attrs)
+      elem.children.map{ |e|
+        if adapter.text?(e)
+          format_url(e.content, attrs)
 
-        elsif adapter.element?(c)
-          if adapter.empty?(c)
-            c
+        elsif adapter.element?(e)
+          if adapter.empty?(e)
+            adapter.to_xhtml(e)
           else
-            adapter.tag_begin(c) +
-            format_autolink_rec(c, attrs) +
-            adapter.tag_end(c)
+            adapter.tag_begin(e) +
+            format_autolink_rec(e, attrs) +
+            adapter.tag_end(e)
           end
 
         else
-          c
+          e
 
         end
 
@@ -158,8 +159,9 @@ module FriendlyFormat
     # recursion entrance
     # @api private
     def format_article_entrance html, allowed_tags = Set.new
-      format_article_rec(adapter.parse(
-        escape_all_inside_pre(html, allowed_tags)), allowed_tags)
+      format_article_rec(
+        adapter.parse(escape_all_inside_pre(html, allowed_tags)),
+        allowed_tags)
     end
 
     # recursion
