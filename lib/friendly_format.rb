@@ -149,7 +149,7 @@ module FriendlyFormat
 
         end
 
-      }.to_s
+      }.join
     end
 
     # recursion entrance
@@ -191,7 +191,7 @@ module FriendlyFormat
           end
 
         end
-      }.to_s
+      }.join
     end
 
     # @api private
