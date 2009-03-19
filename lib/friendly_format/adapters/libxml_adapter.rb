@@ -1,20 +1,28 @@
 
+require 'libxml'
+
 module FriendlyFormat
   class LibxmlAdapter
     class << self
 
       def parse html
-        require 'libxml'
-        parser = LibXML::XML::HTMLParser.new
-        parser.string = html
+        parser = LibXML::XML::HTMLParser.string(
+          "<zzz>#{html}</zzz>",
+          :options => LibXML::XML::HTMLParser::Options::RECOVER)
+
         # root is html, children is [body], first is body
         # same as nokogiri
-        parser.parse.root.children.first
+        # drop zzz with .children.first since it would wrap a tag p for the article
+        parser.parse.root.children.first.children.first
       end
 
-      def to_html node
+      def method_name node
         # discard body
         node.children.to_s
+      end
+
+      def to_xhtml node
+        node.to_s
       end
 
       def element? node

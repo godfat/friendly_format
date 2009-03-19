@@ -14,6 +14,7 @@ TestCase = begin
 require 'friendly_format'
 
 # FriendlyFormat.adapter = FriendlyFormat::NokogiriAdapter
+# FriendlyFormat.adapter = FriendlyFormat::LibxmlAdapter
 
 # 2008-05-09 godfat
 class TestFriendlyFormat < TestCase
