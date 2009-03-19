@@ -1,6 +1,6 @@
 = friendly_article todo list
 
-* choose hpricot <0.7 first or falls back to nokogiri
+* choose hpricot first or falls back to nokogiri
 
 * make format_article take an optional size argument that indicates
   how long should the result be. it should take &lt; as 1 character and

@@ -1,5 +1,4 @@
 
-gem 'hpricot', '<0.7'
 require 'hpricot'
 
 module FriendlyFormat
@@ -27,15 +26,33 @@ module FriendlyFormat
       end
 
       def tag_name node
-        node.stag.name
+        # gem 'hpricot', '<0.7'
+        if node.respond_to?(:stag)
+          node.stag.name
+        # gem 'hpricot', '>=0.7'
+        else
+          node.name
+        end
       end
 
       def tag_begin node
-        node.stag.inspect
+        # gem 'hpricot', '<0.7'
+        if node.respond_to?(:stag)
+          node.stag.inspect
+        # gem 'hpricot', '>=0.7'
+        else
+          "<#{node.name}>"
+        end
       end
 
       def tag_end node
-        (node.etag || Hpricot::ETag.new(node.stag.name)).inspect
+        # gem 'hpricot', '<0.7'
+        if node.respond_to?(:stag)
+          (node.etag || Hpricot::ETag.new(node.stag.name)).inspect
+        # gem 'hpricot', '>=0.7'
+        else
+          "</#{node.name}>"
+        end
       end
 
     end # of class method for HpricotAdapter
