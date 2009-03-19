@@ -42,11 +42,11 @@ module FriendlyFormat
       end
 
       def tag_begin node
-        "<#{node.name}#{node.attributes.to_h}>"
+        "<#{node.name}>"
       end
 
       def tag_end node
-        empty?(node) ? "<#{node.name}/>" : "</#{node.name}>"
+        "</#{node.name}>"
       end
 
     end # of class method for LibxmlAdapter
