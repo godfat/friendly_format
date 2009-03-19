@@ -12,7 +12,15 @@ module FriendlyFormat
   class << self
     attr_writer(:adapter)
     def adapter
-      @adapter ||= HpricotAdapter
+      @adapter ||= begin
+                     HpricotAdapter
+                   rescue LoadError
+                     begin
+                       NokogiriAdapter
+                     rescue LoadError
+                       LibxmlAdapter
+                     end
+                   end
     end
   end
 
