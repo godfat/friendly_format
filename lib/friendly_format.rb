@@ -35,9 +35,10 @@ module FriendlyFormat
     FriendlyFormat.format_article_entrance(html,
       args.inject(Set.new){ |allowed_tags, arg|
         case arg
-          when Symbol; allowed_tags << arg
-          when Set;    allowed_tags += arg
-          else; raise(TypeError.new("expected Symbol or Set, got #{arg.class}"))
+          when String; allowed_tags << arg
+          when Symbol; allowed_tags << arg.to_s
+          when Set;    allowed_tags += Set.new(arg.map{|a|a.to_s})
+          else; raise(TypeError.new("expected String|Symbol|Set, got #{arg.class}"))
         end
         allowed_tags
       })
@@ -131,7 +132,7 @@ module FriendlyFormat
     # perhaps we should escape all inside code instead of pre?
     # @api private
     def escape_all_inside_pre html, allowed_tags
-      return html unless allowed_tags.member? :pre
+      return html unless allowed_tags.member?('pre')
       # don't bother nested pre, because we escape all tags in pre
       html = html + '</pre>' unless html =~ %r{</pre>}i
       html.gsub(%r{<pre>(.*)</pre>}mi){
@@ -184,7 +185,7 @@ module FriendlyFormat
           end
 
         elsif adapter.element?(e)
-          if allowed_tags.member?(e.name.to_sym)
+          if allowed_tags.member?(e.name)
             if adapter.empty?(e) || e.name == 'a'
               adapter.to_xhtml(e)
             else

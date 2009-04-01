@@ -5,8 +5,8 @@ module FriendlyFormat
   # to post or edit articles.
   class SetStrict < Set
     def initialize
-      super([ :a, :b, :code, :del, :em, :font,
-              :i, :img, :li, :ol, :strong, :u, :ul ])
+      super(%w[ a b code del em font
+                i img li ol strong u ul ])
     end
   end
 end

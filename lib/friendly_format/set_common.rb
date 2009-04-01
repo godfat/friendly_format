@@ -6,11 +6,11 @@ module FriendlyFormat
   # a few people have permission to post or edit.
   class SetCommon < Set
     def initialize
-      super([ :a, :area, :b, :big, :blockquote, :br,
-              :center, :cite, :code, :del, :div, :em,
-              :font, :h1, :h2, :h3, :h4, :h5, :h6, :hr,
-              :i, :img, :li, :map, :object, :ol, :p,
-              :pre, :small, :span, :strong, :u, :ul     ])
+      super(%w[ a area b big blockquote br
+                center cite code del div em
+                font h1 h2 h3 h4 h5 h6 hr
+                i img li map object ol p
+                pre small span strong u ul  ])
     end
   end
 end

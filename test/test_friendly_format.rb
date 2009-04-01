@@ -180,4 +180,9 @@ compilation mode. 非常驚人的開發速度。
     assert_equal ' ', format_article(' ')
     assert_equal 'a', format_article('a')
   end
+
+  def test_custom_set
+    s = '<z>zzz</z>'
+    assert_equal s, format_article(s, Set.new << :z)
+  end
 end
