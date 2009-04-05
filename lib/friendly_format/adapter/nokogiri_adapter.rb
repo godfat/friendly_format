@@ -11,7 +11,7 @@ module FriendlyFormat
       # same as libxml
       # drop zzz with .children.first since it would wrap a tag p for the article
       Nokogiri::HTML.parse(
-        "<zzz>#{html}</zzz>",
+        "<zzz>#{html.gsub("\n", '&#xA;')}</zzz>",
         nil, # url?
         html.respond_to?(:encoding) ? html.encoding.name : 'utf-8'
         ).root.children.first.children.first

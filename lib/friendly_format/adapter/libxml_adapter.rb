@@ -8,7 +8,7 @@ module FriendlyFormat
 
     def self.parse html
       parser = LibXML::XML::HTMLParser.string(
-        "<zzz>#{html}</zzz>",
+        "<zzz>#{html.gsub("\n", '&#xA;')}</zzz>",
         :options => LibXML::XML::HTMLParser::Options::RECOVER)
 
       # root is html, children is [body], first is body
