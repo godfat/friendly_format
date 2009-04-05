@@ -1,6 +1,6 @@
 = friendly_format changes history
 
-== friendly_format 0.6.0 / ?
+== friendly_format 0.6.1 / 2009-04-05
 
 * added nokogiri and libxml-ruby support.
 * drop support for hpricot < 0.7

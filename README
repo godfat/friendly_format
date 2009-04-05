@@ -1,4 +1,4 @@
-= friendly_format 0.6
+= friendly_format 0.6.1
 by Lin Jen-Shin (a.k.a. godfat-真常[http://godfat.org])
   godfat (XD) godfat.org
 
@@ -24,9 +24,9 @@ by Lin Jen-Shin (a.k.a. godfat-真常[http://godfat.org])
 
 == REQUIREMENTS:
 
- * hpricot     >=0.6 or
- * nokogiri    >=1.1 or
- * libxml-ruby >=0.9
+ * hpricot     >=0.7 or
+ * nokogiri    >=1.2 or
+ * libxml-ruby >=1.1
 
 == INSTALL:
 
