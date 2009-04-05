@@ -47,6 +47,8 @@ OpenGL, 還有一些 web cgi 之類的東西也有。
 
 現在切入正是時機啊... XD'
 
+    s = format_autolink(str)
+
     assert(
 ' <a href="http://friends.roodo.com/forum/viewTopic/10170" title="http://friends.roodo.com/forum/viewTopic/10170">http://friends.roodo.com/forum/viewTopic/10170</a>
 用 Haskell 寫成的名軟體？
@@ -71,7 +73,7 @@ svn 其實也差不多是要慢慢式微了...
 很多知名 library 都有 haskell binding 了，wxWidgets,
 OpenGL, 還有一些 web cgi 之類的東西也有。
 
-現在切入正是時機啊... XD' == (s = format_autolink(str)))
+現在切入正是時機啊... XD' == s)
     assert(s == format_autolink_regexp(str))
   end
   def test_persent
@@ -79,9 +81,11 @@ OpenGL, 還有一些 web cgi 之類的東西也有。
 'XDDDD
 http://www.amazon.co.jp/%E3%80%8C%E7%84%94~%E3%83%9B%E3%83%A0%E3%83%A9%E3%80%8D~Ar-tonelico2-hymmnos-concert-Side-%E7%B4%85~/dp/B000VKZL30/ref=pd_sbs_sw_img_2 orz'
 
-    assert_equal \
+    s = format_autolink(str)
+
+    assert_equal(
 'XDDDD
-<a href="http://www.amazon.co.jp/%E3%80%8C%E7%84%94~%E3%83%9B%E3%83%A0%E3%83%A9%E3%80%8D~Ar-tonelico2-hymmnos-concert-Side-%E7%B4%85~/dp/B000VKZL30/ref=pd_sbs_sw_img_2" title="http://www.amazon.co.jp/%E3%80%8C%E7%84%94~%E3%83%9B%E3%83%A0%E3%83%A9%E3%80%8D~Ar-tonelico2-hymmnos-concert-Side-%E7%B4%85~/dp/B000VKZL30/ref=pd_sbs_sw_img_2">http://www.amazon.co.jp/%E3%80%8C%E7%84%94~%E3%83%9B%E3%83%A0%E3%83%A9%E...</a> orz', s = format_autolink(str)
+<a href="http://www.amazon.co.jp/%E3%80%8C%E7%84%94~%E3%83%9B%E3%83%A0%E3%83%A9%E3%80%8D~Ar-tonelico2-hymmnos-concert-Side-%E7%B4%85~/dp/B000VKZL30/ref=pd_sbs_sw_img_2" title="http://www.amazon.co.jp/%E3%80%8C%E7%84%94~%E3%83%9B%E3%83%A0%E3%83%A9%E3%80%8D~Ar-tonelico2-hymmnos-concert-Side-%E7%B4%85~/dp/B000VKZL30/ref=pd_sbs_sw_img_2">http://www.amazon.co.jp/%E3%80%8C%E7%84%94~%E3%83%9B%E3%83%A0%E3%83%A9%E...</a> orz', s)
     assert_equal s, format_autolink_regexp(str)
   end
   def test_img_src
