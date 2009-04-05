@@ -137,8 +137,16 @@ http://www.amazon.co.jp/%E3%80%8C%E7%84%94~%E3%83%9B%E3%83%A0%E3%83%A9%E3%80%8D~
     assert_equal s, format_autolink_regexp(str)
   end
   def test_escape_html
-    str = 'a lambda expression is &lambda; x. x+1'
-    assert_equal str, format_article(str)
+       str = 'a lambda expression is &lambda; x. x+1'
+    libxml = 'a lambda expression is λ x. x+1'
+    result = format_article(str)
+
+    if FriendlyFormat.adapter == FriendlyFormat::HpricotAdapter
+      assert_equal(str, result)
+    else
+      assert_equal(libxml, result)
+    end
+
     str = 'as you can see, use &lt;img src="asd"/&gt; to use'
     assert_equal str, format_article(str)
   end
