@@ -91,7 +91,7 @@ module FriendlyFormat
   def format_newline text
     # windows: \r\n
     # mac os 9: \r
-    text.gsub("\r\n", "\n").tr("\r", "\n").gsub("\n", '<br />')
+    text.gsub("\r\n", "\n").tr("\r", "\n").gsub("\n", "<br />\n")
   end
 
 

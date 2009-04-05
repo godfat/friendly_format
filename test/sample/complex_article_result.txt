@@ -1,4 +1,5 @@
-<a href="http://phpbb.godfat.org/viewtopic.php?t=873" title="http://phpbb.godfat.org/viewtopic.php?t=873">http://phpbb.godfat.org/viewtopic.php?t=873</a><br /><pre> 作者  godfat (godfat 真常)                                 站內  ProjectX
+<a href="http://phpbb.godfat.org/viewtopic.php?t=873" title="http://phpbb.godfat.org/viewtopic.php?t=873">http://phpbb.godfat.org/viewtopic.php?t=873</a><br />
+<pre> 作者  godfat (godfat 真常)                                 站內  ProjectX
  標題  Re: [PSC] variants timer
  時間  2008/03/04 Tue 00:34:54
 <a href="http://phpbb.godfat.org/viewtopic.php?t=873" title="http://phpbb.godfat.org/viewtopic.php?t=873">http://phpbb.godfat.org/viewtopic.php?t=873</a>
@@ -105,4 +106,7 @@ tuple.cpp:20: error:  "type_not_found" is not a member of "T"
 
 --
  ※ Orign:  群星的眷屬  chance.twbbs.org
- ◆ Author: godfat From 220-135-28-18.HINET-IP.hinet.net</pre><br /><br />end of article...<br />
+ ◆ Author: godfat From 220-135-28-18.HINET-IP.hinet.net</pre><br />
+<br />
+end of article...<br />
+
