@@ -91,9 +91,21 @@ http://www.amazon.co.jp/%E3%80%8C%E7%84%94~%E3%83%9B%E3%83%A0%E3%83%A9%E3%80%8D~
 
 2007年12月14日
 '
-    assert_equal str, s = format_autolink(str)
-    assert_equal s, format_autolink_regexp(str)
+    libxml =
+'Thirst for Knowledge
+<img src="http://friends.roodo.com/images/diary_photos_large/15386/MjMyNjYtdGhpcnN0X2Zvcl9rbm93bGVkZ2U=.jpg"/>
+
+2007年12月14日
+'
+    s = format_autolink(str)
+    if FriendlyFormat.adapter == FriendlyFormat::LibxmlAdapter
+      assert_equal(libxml, s)
+    else
+      assert_equal(str, s)
+    end
+    assert_equal(str, format_autolink_regexp(str))
   end
+
   def test_wikipedia_persent
     str = 'http://en.wikipedia.org/wiki/Haskell_%28programming_language%29'
     assert_equal \
@@ -129,7 +141,11 @@ http://www.amazon.co.jp/%E3%80%8C%E7%84%94~%E3%83%9B%E3%83%A0%E3%83%A9%E3%80%8D~
     assert_equal '<pre>asdasd&lt;a&gt;orz</pre>', format_article(str, :pre)
 
     str = 'orz<img>asd'
-    assert_equal 'orz<img />asd', format_article(str, :img)
+    if FriendlyFormat.adapter == FriendlyFormat::LibxmlAdapter
+      assert_equal('orz<img/>asd', format_article(str, :img))
+    else
+      assert_equal('orz<img />asd', format_article(str, :img))
+    end
     assert_equal 'orz&lt;img&gt;asd', format_article(str)
   end
   def test_trim_url
