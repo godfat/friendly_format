@@ -32,16 +32,18 @@ module FriendlyFormat
   def format_article html, *args
     return html if html.strip == ''
 
-    FriendlyFormat.format_article_entrance(html,
-      args.inject(Set.new){ |allowed_tags, arg|
-        case arg
-          when String; allowed_tags << arg
-          when Symbol; allowed_tags << arg.to_s
-          when Set;    allowed_tags += Set.new(arg.map{|a|a.to_s})
-          else; raise(TypeError.new("expected String|Symbol|Set, got #{arg.class}"))
-        end
-        allowed_tags
-      })
+    FriendlyFormat.force_encoding(
+      FriendlyFormat.format_article_entrance(html,
+        args.inject(Set.new){ |allowed_tags, arg|
+          case arg
+            when String; allowed_tags << arg
+            when Symbol; allowed_tags << arg.to_s
+            when Set;    allowed_tags += Set.new(arg.map{|a|a.to_s})
+            else; raise(TypeError.new("expected String|Symbol|Set, got #{arg.class}"))
+          end
+          allowed_tags
+        }),
+      html)
   end
 
   # automaticly add "a href" tag on text starts from
@@ -51,8 +53,10 @@ module FriendlyFormat
   def format_autolink html, attrs = {}
     return html if html.strip == ''
 
-    FriendlyFormat.format_autolink_rec(
-      FriendlyFormat.adapter.parse(html), attrs)
+    FriendlyFormat.force_encoding(
+      FriendlyFormat.format_autolink_rec(
+        FriendlyFormat.adapter.parse(html), attrs),
+      html)
   end
 
   # translated from drupal-6.2/modules/filter/filter.module
@@ -117,13 +121,12 @@ module FriendlyFormat
       text.gsub(
   %r{((http://|https://|ftp://|mailto:|smb://|afp://|file://|gopher://|news://|ssl://|sslv2://|sslv3://|tls://|tcp://|udp://|www\.)([a-zA-Z0-9@:%_+*~#?&=.,/;-]*[a-zA-Z0-9@:%_+*~#&=/;-]))([.,?!]*?)}i){ |match|
         url = $1 # is there any other way to get this variable?
-
         caption = trim(url)
-        attrs = attrs.map{ |k,v| " #{k}=\"#{v}\""}.join
+        html_attrs = attrs.map{ |k,v| " #{k}=\"#{v}\""}.join
 
         # Match www domains/addresses.
         url = "http://#{url}" unless url =~ %r{^http://}
-        "<a href=\"#{url}\" title=\"#{url}\"#{attrs}>#{caption}</a>"
+        "<a href=\"#{url}\" title=\"#{url}\"#{html_attrs}>#{caption}</a>"
       # Match e-mail addresses.
       }.gsub( %r{([A-Za-z0-9._-]+@[A-Za-z0-9._+-]+\.[A-Za-z]{2,4})([.,?!]*?)}i,
               '<a href="mailto:\1">\1</a>')
@@ -220,6 +223,16 @@ module FriendlyFormat
     # @api private
     def escape_lt text
       text.gsub('<', '&lt;')
+    end
+
+    # force encoding for ruby 1.9
+    # @api private
+    def force_encoding output, input
+      if output.respond_to?(:force_encoding)
+        output.force_encoding(input.encoding)
+      else
+        output
+      end
     end
 
   end

@@ -174,9 +174,16 @@ compilation mode. 非常驚人的開發速度。
 此外，其中一位開發者，<a href="http://blog.headius.com/">Charles Nutter</a> 也經常參與 <a href="http://www.ruby-forum.com/forum/14">ruby-core</a> 的討論，
 對於 Ruby 的開發頗有貢獻。'
 
-    expected = '<img src="http://flolac.iis.sinica.edu.tw/lambdawan/sites/default/files/ruby.png.thumb.jpg" style="float: right;" /><br /><a href="http://www.ruby-forum.com/topic/169911">JRuby 1.1.5 Released</a><br /><a href="http://jruby.codehaus.org/">JRuby</a> 是用 Java 寫成的 Ruby interpreter/compiler.<br />原本 JRuby 只是普通的 open source project, 後來因為 <a href="http://www.sun.com/">Sun Microsystem</a>,<br />也就是 Java 的開發公司，看好 JRuby, 於是僱用 JRuby team,<br />full time 開發 JRuby. 後來 JRuby 在各方面都快速大幅成長，<br />尤其效能有了不可思議的大幅提昇，可能是 Sun 有一些撇步沒有公開吧。<br /><br />效能大幅提昇之後，JRuby 開發沒有停緩，接下來是非常大量的相容性提昇。<br />也從原本僅支援 interpret mode 到後來也支援 just in time 與 ahead of time 的<br />compilation mode. 非常驚人的開發速度。<br /><zzz>&lt;xd><br />此外，其中一位開發者，<a href="http://blog.headius.com/">Charles Nutter</a> 也經常參與 <a href="http://www.ruby-forum.com/forum/14">ruby-core</a> 的討論，<br />對於 Ruby 的開發頗有貢獻。&lt;/xd></zzz>'
+    expected = '<img style="float: right;" src="http://flolac.iis.sinica.edu.tw/lambdawan/sites/default/files/ruby.png.thumb.jpg" /><br /><a href="http://www.ruby-forum.com/topic/169911">JRuby 1.1.5 Released</a><br /><a href="http://jruby.codehaus.org/">JRuby</a> 是用 Java 寫成的 Ruby interpreter/compiler.<br />原本 JRuby 只是普通的 open source project, 後來因為 <a href="http://www.sun.com/">Sun Microsystem</a>,<br />也就是 Java 的開發公司，看好 JRuby, 於是僱用 JRuby team,<br />full time 開發 JRuby. 後來 JRuby 在各方面都快速大幅成長，<br />尤其效能有了不可思議的大幅提昇，可能是 Sun 有一些撇步沒有公開吧。<br /><br />效能大幅提昇之後，JRuby 開發沒有停緩，接下來是非常大量的相容性提昇。<br />也從原本僅支援 interpret mode 到後來也支援 just in time 與 ahead of time 的<br />compilation mode. 非常驚人的開發速度。<br /><zzz>&lt;xd><br />此外，其中一位開發者，<a href="http://blog.headius.com/">Charles Nutter</a> 也經常參與 <a href="http://www.ruby-forum.com/forum/14">ruby-core</a> 的討論，<br />對於 Ruby 的開發頗有貢獻。&lt;/xd></zzz>'
 
-    assert(expected == format_article(input, SetCommon.new, :zzz))
+    # img style after img src
+    expected_18_hpricot = '<img src="http://flolac.iis.sinica.edu.tw/lambdawan/sites/default/files/ruby.png.thumb.jpg" style="float: right;" /><br /><a href="http://www.ruby-forum.com/topic/169911">JRuby 1.1.5 Released</a><br /><a href="http://jruby.codehaus.org/">JRuby</a> 是用 Java 寫成的 Ruby interpreter/compiler.<br />原本 JRuby 只是普通的 open source project, 後來因為 <a href="http://www.sun.com/">Sun Microsystem</a>,<br />也就是 Java 的開發公司，看好 JRuby, 於是僱用 JRuby team,<br />full time 開發 JRuby. 後來 JRuby 在各方面都快速大幅成長，<br />尤其效能有了不可思議的大幅提昇，可能是 Sun 有一些撇步沒有公開吧。<br /><br />效能大幅提昇之後，JRuby 開發沒有停緩，接下來是非常大量的相容性提昇。<br />也從原本僅支援 interpret mode 到後來也支援 just in time 與 ahead of time 的<br />compilation mode. 非常驚人的開發速度。<br /><zzz>&lt;xd><br />此外，其中一位開發者，<a href="http://blog.headius.com/">Charles Nutter</a> 也經常參與 <a href="http://www.ruby-forum.com/forum/14">ruby-core</a> 的討論，<br />對於 Ruby 的開發頗有貢獻。&lt;/xd></zzz>'
+
+    if RUBY_VERSION =~ /^1\.8/ && FriendlyFormat.adapter == FriendlyFormat::HpricotAdapter
+      assert(expected_18_hpricot == format_article(input, SetCommon.new, :zzz))
+    else
+      assert(expected == format_article(input, SetCommon.new, :zzz))
+    end
   end
 
   def test_empty_article
