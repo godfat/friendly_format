@@ -1,28 +1,17 @@
 
-require 'friendly_format/adapters/libxml_adapter'
+require 'friendly_format/adapters/abstract'
 require 'nokogiri'
 
 module FriendlyFormat
-  class NokogiriAdapter < LibxmlAdapter
-    class << self
+  class NokogiriAdapter
+    extend Abstract
 
-      def parse html
-        # root is html, children is [body], first is body
-        # same as libxml
-        # drop zzz with .children.first since it would wrap a tag p for the article
-        Nokogiri::HTML.parse("<zzz>#{html}</zzz>").root.children.first.children.first
-      end
+    def self.parse html
+      # root is html, children is [body], first is body
+      # same as libxml
+      # drop zzz with .children.first since it would wrap a tag p for the article
+      Nokogiri::HTML.parse("<zzz>#{html}</zzz>").root.children.first.children.first
+    end
 
-      def to_xhtml node
-        node.to_xhtml
-      end
-
-      def tag_begin node
-        attrs = node.attributes.map{ |key_value| key_value.join('="') + '"' }.join(' ')
-        attrs = ' ' + attrs if attrs != ''
-        "<#{node.name}#{attrs}>"
-      end
-
-    end # of class method for NokogiriAdapter
   end # of NokogiriAdapter
 end # of FriendlyFormat
