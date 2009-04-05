@@ -7,6 +7,8 @@
   1. hpricot or falls back to:
   2. nokogiri or falls back to:
   3. libxml-ruby
+* now internally, we store string instead of symbol
+  for accepted tags to prevent from symbol explosion.
 
 == friendly_format 0.5.1 / 2008-12-11
 
