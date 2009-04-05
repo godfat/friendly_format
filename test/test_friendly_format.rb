@@ -13,11 +13,7 @@ TestCase = begin
 
 require 'friendly_format'
 
-# FriendlyFormat.adapter = FriendlyFormat::NokogiriAdapter
-# FriendlyFormat.adapter = FriendlyFormat::LibxmlAdapter
-
-# 2008-05-09 godfat
-class TestFriendlyFormat < TestCase
+module TestCases
   include FriendlyFormat
 
   def test_article
@@ -198,3 +194,15 @@ compilation mode. 非常驚人的開發速度。
     assert_equal s, format_article(s, Set.new << :z)
   end
 end
+
+%w[HpricotAdapter NokogiriAdapter LibxmlAdapter].each{ |adapter|
+  eval <<-RUBY
+    class Test#{adapter} < TestCase
+      include TestCases
+
+      def setup
+        FriendlyFormat.adapter = FriendlyFormat::#{adapter}
+      end
+    end
+  RUBY
+}
