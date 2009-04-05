@@ -9,6 +9,7 @@
   3. libxml-ruby
 * now internally, we store string instead of symbol
   for accepted tags to prevent from symbol explosion.
+* ruby 1.9 compliant
 
 == friendly_format 0.5.1 / 2008-12-11
 

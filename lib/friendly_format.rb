@@ -5,9 +5,9 @@ require 'friendly_format/set_strict'
 
 # 2008-05-09 godfat
 module FriendlyFormat
-  autoload(:LibxmlAdapter,   'friendly_format/adapters/libxml_adapter')
-  autoload(:HpricotAdapter,  'friendly_format/adapters/hpricot_adapter')
-  autoload(:NokogiriAdapter, 'friendly_format/adapters/nokogiri_adapter')
+  autoload(:LibxmlAdapter,   'friendly_format/adapter/libxml_adapter')
+  autoload(:HpricotAdapter,  'friendly_format/adapter/hpricot_adapter')
+  autoload(:NokogiriAdapter, 'friendly_format/adapter/nokogiri_adapter')
 
   class << self
     attr_writer(:adapter)

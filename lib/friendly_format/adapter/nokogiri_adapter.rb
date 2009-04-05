@@ -1,5 +1,5 @@
 
-require 'friendly_format/adapters/abstract'
+require 'friendly_format/adapter/abstract'
 require 'nokogiri'
 
 module FriendlyFormat
