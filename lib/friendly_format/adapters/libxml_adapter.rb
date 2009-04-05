@@ -1,8 +1,7 @@
 
-require 'libxml'
-
 module FriendlyFormat
   class LibxmlAdapter
+    autoload(:LibXML, 'libxml')
     class << self
 
       def parse html
