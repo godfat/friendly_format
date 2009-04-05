@@ -13,7 +13,7 @@ module FriendlyFormat
       Nokogiri::HTML.parse(
         "<zzz>#{html}</zzz>",
         nil, # url?
-        html.respond_to?(:encoding) ? html.encoding.name : nil
+        html.respond_to?(:encoding) ? html.encoding.name : 'utf-8'
         ).root.children.first.children.first
     end
 

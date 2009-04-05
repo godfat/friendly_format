@@ -11,6 +11,10 @@ module FriendlyFormat
       node.to_xhtml
     end
 
+    def content node
+      node.to_s
+    end
+
     def element? node
       node.element?
     end
@@ -21,21 +25,6 @@ module FriendlyFormat
 
     def empty? node
       node.children.empty?
-    end
-
-    def tag_name node
-      node.name
-    end
-
-    def tag_begin node
-      # attrs = node.attributes.map{ |key_value| key_value.join('="') + '"' }.join(' ')
-      # attrs = ' ' + attrs if attrs != ''
-      # "<#{node.name}#{attrs}>"
-      "<#{node.name}>"
-    end
-
-    def tag_end node
-      "</#{node.name}>"
     end
 
   end # of Abstract

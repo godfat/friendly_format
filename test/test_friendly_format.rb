@@ -70,7 +70,7 @@ svn 其實也差不多是要慢慢式微了...
 OpenGL, 還有一些 web cgi 之類的東西也有。
 
 現在切入正是時機啊... XD' == s)
-    assert(s == format_autolink_regexp(str))
+    assert_equal(s, format_autolink_regexp(str))
   end
   def test_persent
     str =
@@ -121,14 +121,16 @@ http://www.amazon.co.jp/%E3%80%8C%E7%84%94~%E3%83%9B%E3%83%A0%E3%83%A9%E3%80%8D~
   def test_escape_html_and_correct_html
     str = 'test<p>if missing end of p'
     assert_equal 'test<p>if missing end of p</p>', format_article(str, :p)
-    assert_equal 'test&lt;p>if missing end of p&lt;/p>', format_article(str, :a)
+    assert_equal 'test&lt;p&gt;if missing end of p&lt;/p&gt;', format_article(str, :a)
+
     str = '<pre>asdasd<a>orz'
-    assert_equal '<pre>asdasd&lt;a>orz</pre>', format_article(str, :a, :pre)
-    assert_equal '&lt;pre>asdasd<a>orz</a>&lt;/pre>', format_article(str, :a)
-    assert_equal '<pre>asdasd&lt;a>orz</pre>', format_article(str, :pre)
+    assert_equal '<pre>asdasd&lt;a&gt;orz</pre>', format_article(str, :a, :pre)
+    assert_equal '&lt;pre&gt;asdasd<a>orz</a>&lt;/pre&gt;', format_article(str, :a)
+    assert_equal '<pre>asdasd&lt;a&gt;orz</pre>', format_article(str, :pre)
+
     str = 'orz<img>asd'
     assert_equal 'orz<img />asd', format_article(str, :img)
-    assert_equal 'orz&lt;img>asd', format_article(str)
+    assert_equal 'orz&lt;img&gt;asd', format_article(str)
   end
   def test_trim_url
     str = 'test with http://890123456789012345678901234567890123456789012345678901234567890123456789.com'
@@ -154,8 +156,8 @@ http://www.amazon.co.jp/%E3%80%8C%E7%84%94~%E3%83%9B%E3%83%A0%E3%83%A9%E3%80%8D~
     result = File.read('test/sample/complex_article_result.txt').chop
     input  = File.read('test/sample/complex_article.txt')
 
-    assert(result == format_article(input, :pre))
-    assert(result == format_article(input, SetCommon.new))
+    assert_equal(result, format_article(input, :pre))
+    assert_equal(result, format_article(input, SetCommon.new))
   end
   def test_simple_link
     s = '今天是我一歲生日 <a href="http://godfat.org/" title="http://godfat.org/">http://godfat.org/</a> 真的嗎？'
@@ -178,10 +180,10 @@ compilation mode. 非常驚人的開發速度。
 此外，其中一位開發者，<a href="http://blog.headius.com/">Charles Nutter</a> 也經常參與 <a href="http://www.ruby-forum.com/forum/14">ruby-core</a> 的討論，
 對於 Ruby 的開發頗有貢獻。'
 
-    expected = '<img style="float: right;" src="http://flolac.iis.sinica.edu.tw/lambdawan/sites/default/files/ruby.png.thumb.jpg" /><br /><a href="http://www.ruby-forum.com/topic/169911">JRuby 1.1.5 Released</a><br /><a href="http://jruby.codehaus.org/">JRuby</a> 是用 Java 寫成的 Ruby interpreter/compiler.<br />原本 JRuby 只是普通的 open source project, 後來因為 <a href="http://www.sun.com/">Sun Microsystem</a>,<br />也就是 Java 的開發公司，看好 JRuby, 於是僱用 JRuby team,<br />full time 開發 JRuby. 後來 JRuby 在各方面都快速大幅成長，<br />尤其效能有了不可思議的大幅提昇，可能是 Sun 有一些撇步沒有公開吧。<br /><br />效能大幅提昇之後，JRuby 開發沒有停緩，接下來是非常大量的相容性提昇。<br />也從原本僅支援 interpret mode 到後來也支援 just in time 與 ahead of time 的<br />compilation mode. 非常驚人的開發速度。<br /><zzz>&lt;xd><br />此外，其中一位開發者，<a href="http://blog.headius.com/">Charles Nutter</a> 也經常參與 <a href="http://www.ruby-forum.com/forum/14">ruby-core</a> 的討論，<br />對於 Ruby 的開發頗有貢獻。&lt;/xd></zzz>'
+    expected = '<img style="float: right;" src="http://flolac.iis.sinica.edu.tw/lambdawan/sites/default/files/ruby.png.thumb.jpg" /><br /><a href="http://www.ruby-forum.com/topic/169911">JRuby 1.1.5 Released</a><br /><a href="http://jruby.codehaus.org/">JRuby</a> 是用 Java 寫成的 Ruby interpreter/compiler.<br />原本 JRuby 只是普通的 open source project, 後來因為 <a href="http://www.sun.com/">Sun Microsystem</a>,<br />也就是 Java 的開發公司，看好 JRuby, 於是僱用 JRuby team,<br />full time 開發 JRuby. 後來 JRuby 在各方面都快速大幅成長，<br />尤其效能有了不可思議的大幅提昇，可能是 Sun 有一些撇步沒有公開吧。<br /><br />效能大幅提昇之後，JRuby 開發沒有停緩，接下來是非常大量的相容性提昇。<br />也從原本僅支援 interpret mode 到後來也支援 just in time 與 ahead of time 的<br />compilation mode. 非常驚人的開發速度。<br /><zzz>&lt;xd&gt;<br />此外，其中一位開發者，<a href="http://blog.headius.com/">Charles Nutter</a> 也經常參與 <a href="http://www.ruby-forum.com/forum/14">ruby-core</a> 的討論，<br />對於 Ruby 的開發頗有貢獻。&lt;/xd&gt;</zzz>'
 
     # img style after img src
-    expected_18_hpricot = '<img src="http://flolac.iis.sinica.edu.tw/lambdawan/sites/default/files/ruby.png.thumb.jpg" style="float: right;" /><br /><a href="http://www.ruby-forum.com/topic/169911">JRuby 1.1.5 Released</a><br /><a href="http://jruby.codehaus.org/">JRuby</a> 是用 Java 寫成的 Ruby interpreter/compiler.<br />原本 JRuby 只是普通的 open source project, 後來因為 <a href="http://www.sun.com/">Sun Microsystem</a>,<br />也就是 Java 的開發公司，看好 JRuby, 於是僱用 JRuby team,<br />full time 開發 JRuby. 後來 JRuby 在各方面都快速大幅成長，<br />尤其效能有了不可思議的大幅提昇，可能是 Sun 有一些撇步沒有公開吧。<br /><br />效能大幅提昇之後，JRuby 開發沒有停緩，接下來是非常大量的相容性提昇。<br />也從原本僅支援 interpret mode 到後來也支援 just in time 與 ahead of time 的<br />compilation mode. 非常驚人的開發速度。<br /><zzz>&lt;xd><br />此外，其中一位開發者，<a href="http://blog.headius.com/">Charles Nutter</a> 也經常參與 <a href="http://www.ruby-forum.com/forum/14">ruby-core</a> 的討論，<br />對於 Ruby 的開發頗有貢獻。&lt;/xd></zzz>'
+    expected_18_hpricot = '<img src="http://flolac.iis.sinica.edu.tw/lambdawan/sites/default/files/ruby.png.thumb.jpg" style="float: right;" /><br /><a href="http://www.ruby-forum.com/topic/169911">JRuby 1.1.5 Released</a><br /><a href="http://jruby.codehaus.org/">JRuby</a> 是用 Java 寫成的 Ruby interpreter/compiler.<br />原本 JRuby 只是普通的 open source project, 後來因為 <a href="http://www.sun.com/">Sun Microsystem</a>,<br />也就是 Java 的開發公司，看好 JRuby, 於是僱用 JRuby team,<br />full time 開發 JRuby. 後來 JRuby 在各方面都快速大幅成長，<br />尤其效能有了不可思議的大幅提昇，可能是 Sun 有一些撇步沒有公開吧。<br /><br />效能大幅提昇之後，JRuby 開發沒有停緩，接下來是非常大量的相容性提昇。<br />也從原本僅支援 interpret mode 到後來也支援 just in time 與 ahead of time 的<br />compilation mode. 非常驚人的開發速度。<br /><zzz>&lt;xd&gt;<br />此外，其中一位開發者，<a href="http://blog.headius.com/">Charles Nutter</a> 也經常參與 <a href="http://www.ruby-forum.com/forum/14">ruby-core</a> 的討論，<br />對於 Ruby 的開發頗有貢獻。&lt;/xd&gt;</zzz>'
 
     result = format_article(input, SetCommon.new, :zzz)
     if RUBY_VERSION =~ /^1\.8/ && FriendlyFormat.adapter == FriendlyFormat::HpricotAdapter

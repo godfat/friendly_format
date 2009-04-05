@@ -134,14 +134,14 @@ module FriendlyFormat
 
     # perhaps we should escape all inside code instead of pre?
     # @api private
-    def escape_all_inside_pre html, allowed_tags
+    def escape_ltgt_inside_pre html, allowed_tags
       return html unless allowed_tags.member?('pre')
       # don't bother nested pre, because we escape all tags in pre
       html = html + '</pre>' unless html =~ %r{</pre>}i
       html.gsub(%r{<pre>(.*)</pre>}mi){
         # stop escaping for '>' because drupal's url filter would make &gt; into url...
         # is there any other way to get matched group?
-        "<pre>#{escape_lt(escape_amp($1))}</pre>"
+        "<pre>#{escape_ltgt($1)}</pre>"
       }
     end
 
@@ -155,9 +155,9 @@ module FriendlyFormat
           if adapter.empty?(e)
             adapter.to_xhtml(e)
           else
-            adapter.tag_begin(e) +
+            "<#{e.name}>" +
             format_autolink_rec(e, attrs) +
-            adapter.tag_end(e)
+            "</#{e.name}>"
           end
 
         else
@@ -172,7 +172,7 @@ module FriendlyFormat
     # @api private
     def format_article_entrance html, allowed_tags = Set.new
       format_article_rec(
-        adapter.parse(escape_all_inside_pre(html, allowed_tags)),
+        adapter.parse(escape_ltgt_inside_pre(html, allowed_tags)),
         allowed_tags)
     end
 
@@ -182,9 +182,9 @@ module FriendlyFormat
       elem.children.map{ |e|
         if adapter.text?(e)
           if no_format_newline
-            format_url(e.content)
+            format_url(adapter.content(e))
           else
-            format_newline(format_url(e.content))
+            format_newline(format_url(adapter.content(e)))
           end
 
         elsif adapter.element?(e)
@@ -192,18 +192,18 @@ module FriendlyFormat
             if adapter.empty?(e) || e.name == 'a'
               adapter.to_xhtml(e)
             else
-              adapter.tag_begin(e) +
+              "<#{e.name}>" +
               format_article_rec(
-                e, allowed_tags, adapter.tag_name(e) == 'pre') +
-              adapter.tag_end(e)
+                e, allowed_tags, e.name == 'pre') +
+              "</#{e.name}>"
             end
           else
             if adapter.empty?(e)
-              escape_lt(adapter.tag_begin(e))
+              "&lt;#{e.name}&gt;"
             else
-              escape_lt(adapter.tag_begin(e)) +
+              "&lt;#{e.name}&gt;" +
               format_article_rec(e, allowed_tags) +
-              escape_lt(adapter.tag_end(e))
+              "&lt;/#{e.name}&gt;"
             end
           end
 
@@ -211,18 +211,13 @@ module FriendlyFormat
       }.join
     end
 
-    # @api private
-    def escape_amp text
-      text.gsub('&', '&amp;')
-    end
-
     # i cannot find a way to escape both lt and gt,
     # so it's a trick that just escape lt and no browser
     # would treat complex lt and gt structure to be a tag
     # wraping content.
     # @api private
-    def escape_lt text
-      text.gsub('<', '&lt;')
+    def escape_ltgt text
+      text.gsub('<', '&lt;').gsub('>', '&gt;')
     end
 
     # force encoding for ruby 1.9
