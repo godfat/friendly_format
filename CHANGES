@@ -3,6 +3,7 @@
 == friendly_format ? / ?
 
 * no more super long line. added a newline after br tag.
+* all adapters work nearly the same now.
 
 == friendly_format 0.6.1 / 2009-04-05
 
