@@ -1,9 +1,10 @@
 = friendly_format changes history
 
-== friendly_format ? / ?
+== friendly_format 0.7 / ?
 
 * no more super long line. added a newline after br tag.
 * all adapters work nearly the same now.
+* dropped support for libxml
 
 == friendly_format 0.6.1 / 2009-04-05
 

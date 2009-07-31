@@ -265,7 +265,7 @@ compilation mode. 非常驚人的開發速度。<br />
   end
 end
 
-%w[HpricotAdapter NokogiriAdapter LibxmlAdapter].each{ |adapter|
+%w[HpricotAdapter NokogiriAdapter].each{ |adapter|
   eval <<-RUBY
     class Test#{adapter} < TestCase
       include TestCases

@@ -10,9 +10,7 @@ PROJ.url = "http://github.com/godfat/#{PROJ.name}"
 PROJ.rubyforge.name = 'ludy'
 
 PROJ.gem.development_dependencies << ['hpricot',     '>=0.7'] <<
-                                     ['nokogiri',    '>=1.2'] <<
-                                     ['libxml-ruby', '>=1.1']
-
+                                     ['nokogiri',    '>=1.2']
 # PROJ.ruby_opts.delete '-w'
 
 PROJ.description = PROJ.summary = paragraphs_of('README', 'description').join("\n\n")

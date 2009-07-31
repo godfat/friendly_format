@@ -26,7 +26,6 @@ by Lin Jen-Shin (a.k.a. godfat-真常[http://godfat.org])
 
  * hpricot     >=0.7 or
  * nokogiri    >=1.2 or
- * libxml-ruby >=1.1
 
 == INSTALL:
 
