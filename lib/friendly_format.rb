@@ -178,13 +178,15 @@ module FriendlyFormat
 
     # recursion
     # @api private
-    def format_article_rec elem, allowed_tags = Set.new, no_format_newline = false
+    def format_article_rec(elem, allowed_tags = Set.new, tag_name = nil)
+
       elem.children.map{ |e|
         if e.text?
-          if no_format_newline
-            format_url(e.to_html)
-          else
-            format_newline(format_url(e.to_html))
+          result = e.to_html
+          case tag_name
+            when 'pre'; format_url(    result)
+            when   'a'; format_newline(result)
+            else      ; format_newline(format_url(result))
           end
 
         elsif e.elem?
@@ -193,11 +195,7 @@ module FriendlyFormat
               FriendlyFormat.node_tag_single(e)
             else
               FriendlyFormat.node_tag_normal(e) +
-              if e.name == 'a'
-                e.inner_text
-              else
-                format_article_rec(e, allowed_tags, e.name == 'pre')
-              end +
+              format_article_rec(e, allowed_tags, e.name) +
               "</#{e.name}>"
             end
           else

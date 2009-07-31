@@ -225,6 +225,11 @@ compilation mode. 非常驚人的開發速度。<br />
     assert_equal(s, format_autolink(s))
   end
 
+  def test_nested_a_tag
+    s = '<a href="uri"><img src="uri" /></a>'
+    assert_equal(s, format_article(s, 'img', 'a'))
+  end
+
 end
 
 %w[HpricotAdapter NokogiriAdapter].each{ |adapter|
