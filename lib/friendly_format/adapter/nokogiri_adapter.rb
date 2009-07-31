@@ -23,9 +23,5 @@ module FriendlyFormat
       node.children.empty?
     end
 
-    def attrs node
-      node.attributes.inject(''){ |i, (k, v)| i + " #{k}=\"#{v}\"" }
-    end
-
   end # of NokogiriAdapter
 end # of FriendlyFormat

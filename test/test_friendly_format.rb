@@ -239,6 +239,17 @@ compilation mode. 非常驚人的開發速度。<br />
     s = '<z>zzz</z>'
     assert_equal s, format_article(s, Set.new << :z)
   end
+
+  def test_preserve_attributes
+    s = '<a href="#">text</a>'
+    assert_equal('&lt;a href="#"&gt;text&lt;/a&gt;', format_article(s))
+
+    s = '<div class="orz">test</div>'
+    assert_equal(s, format_article(s, 'div'))
+
+    assert_equal(s, format_autolink(s))
+  end
+
 end
 
 %w[HpricotAdapter NokogiriAdapter].each{ |adapter|

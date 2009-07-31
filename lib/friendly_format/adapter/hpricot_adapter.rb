@@ -17,9 +17,5 @@ module FriendlyFormat
       node.empty?
     end
 
-    def attrs node
-      node.attributes.inject(''){ |i, (k, v)| i + " #{k}=\"#{v}\"" }
-    end
-
   end # of HpricotAdapter
 end # of FriendlyFormat

@@ -5,6 +5,7 @@
 * no more super long line. added a newline after br tag.
 * all adapters work nearly the same now.
 * dropped support for libxml
+* fixed a bug that ignored tag attributes
 
 == friendly_format 0.6.1 / 2009-04-05
 

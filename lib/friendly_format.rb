@@ -155,7 +155,7 @@ module FriendlyFormat
           if adapter.empty?(e)
             adapter.to_xhtml(e)
           else
-            "<#{e.name}>" +
+            "<#{e.name}#{FriendlyFormat.node_attrs(e)}>" +
             format_autolink_rec(e, attrs) +
             "</#{e.name}>"
           end
@@ -192,16 +192,16 @@ module FriendlyFormat
             if adapter.empty?(e) || e.name == 'a'
               adapter.to_xhtml(e)
             else
-              "<#{e.name}>" +
+              "<#{e.name}#{FriendlyFormat.node_attrs(e)}>" +
               format_article_rec(
                 e, allowed_tags, e.name == 'pre') +
               "</#{e.name}>"
             end
           else
             if adapter.empty?(e)
-              "&lt;#{e.name}&gt;"
+              escape_ltgt(e.to_s)
             else
-              "&lt;#{e.name}&gt;" +
+              "&lt;#{e.name}#{FriendlyFormat.node_attrs(e)}&gt;" +
               format_article_rec(e, allowed_tags) +
               "&lt;/#{e.name}&gt;"
             end
@@ -228,6 +228,10 @@ module FriendlyFormat
       else
         output
       end
+    end
+
+    def node_attrs node
+      node.attributes.inject(''){ |i, (k, v)| i + " #{k}=\"#{v}\"" }
     end
 
   end
