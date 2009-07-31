@@ -230,6 +230,13 @@ compilation mode. 非常驚人的開發速度。<br />
     assert_equal(s, format_article(s, 'img', 'a'))
   end
 
+  def test_filter_js
+    s = '<a href="#" onclick="window.alert(\'attack!\')">js</a>'
+    assert_equal('<a href="#">js</a>', format_article(s, SetCommon.new))
+
+    s = '<a href="#" onclick="window.alert(\'attack!\')">js</a>'
+    assert_equal(FriendlyFormat.escape_ltgt(s), format_article(s))
+  end
 end
 
 %w[HpricotAdapter NokogiriAdapter].each{ |adapter|

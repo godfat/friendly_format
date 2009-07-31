@@ -228,11 +228,11 @@ module FriendlyFormat
     end
 
     def node_tag_single node
-      "<#{node.name}#{node_attrs(node)} />"
+      "<#{node.name}#{node_attrs_reject_js(node)} />"
     end
 
     def node_tag_normal node
-      "<#{node.name}#{node_attrs(node)}>"
+      "<#{node.name}#{node_attrs_reject_js(node)}>"
     end
 
     def node_tag_escape node
@@ -240,7 +240,15 @@ module FriendlyFormat
     end
 
     def node_attrs node
-      node.attributes.sort.inject(''){ |i, (k, v)| i + " #{k}=\"#{v}\"" }
+      attrs2str(node.attributes)
+    end
+
+    def node_attrs_reject_js node
+      attrs2str(node.attributes.reject{ |k, v| k =~ /\Aon/ })
+    end
+
+    def attrs2str attrs
+      attrs.sort.inject(''){ |i, (k, v)| i + " #{k}=\"#{v}\"" }
     end
 
   end
