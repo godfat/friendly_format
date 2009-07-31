@@ -155,7 +155,7 @@ module FriendlyFormat
           if adapter.empty?(e)
             adapter.to_xhtml(e)
           else
-            "<#{e.name}#{FriendlyFormat.node_attrs(e)}>" +
+            FriendlyFormat.node_tag_normal(e) +
             format_autolink_rec(e, attrs) +
             "</#{e.name}>"
           end
