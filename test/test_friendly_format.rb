@@ -91,18 +91,8 @@ http://www.amazon.co.jp/%E3%80%8C%E7%84%94~%E3%83%9B%E3%83%A0%E3%83%A9%E3%80%8D~
 
 2007年12月14日
 '
-    libxml =
-'Thirst for Knowledge
-<img src="http://friends.roodo.com/images/diary_photos_large/15386/MjMyNjYtdGhpcnN0X2Zvcl9rbm93bGVkZ2U=.jpg"/>
-
-2007年12月14日
-'
     s = format_autolink(str)
-    if FriendlyFormat.adapter == FriendlyFormat::LibxmlAdapter
-      assert_equal(libxml, s)
-    else
-      assert_equal(str, s)
-    end
+    assert_equal(str, s)
     assert_equal(str, format_autolink_regexp(str))
   end
 
@@ -141,19 +131,22 @@ http://www.amazon.co.jp/%E3%80%8C%E7%84%94~%E3%83%9B%E3%83%A0%E3%83%A9%E3%80%8D~
     assert_equal '<pre>asdasd&lt;a&gt;orz</pre>', format_article(str, :pre)
 
     str = 'orz<img>asd'
-    if FriendlyFormat.adapter == FriendlyFormat::LibxmlAdapter
-      assert_equal('orz<img/>asd', format_article(str, :img))
+    assert_equal('orz<img />asd', format_article(str, :img))
+
+    if FriendlyFormat.adapter == FriendlyFormat::NokogiriAdapter
+      assert_equal('orz&lt;img&gt;asd', format_article(str))
     else
-      assert_equal('orz<img />asd', format_article(str, :img))
+      assert_equal('orz&lt;img /&gt;asd', format_article(str))
     end
-    assert_equal 'orz&lt;img&gt;asd', format_article(str)
   end
+
   def test_trim_url
     str = 'test with http://890123456789012345678901234567890123456789012345678901234567890123456789.com'
 
     assert_equal 'test with <a href="http://890123456789012345678901234567890123456789012345678901234567890123456789.com" title="http://890123456789012345678901234567890123456789012345678901234567890123456789.com">http://89012345678901234567890123456789012345678901234567890123456789012...</a>', s = format_article(str)
     assert_equal s, format_autolink_regexp(str)
   end
+
   def test_escape_html
        str = 'a lambda expression is &lambda; x. x+1'
     libxml = 'a lambda expression is λ x. x+1'
@@ -168,6 +161,7 @@ http://www.amazon.co.jp/%E3%80%8C%E7%84%94~%E3%83%9B%E3%83%A0%E3%83%A9%E3%80%8D~
     str = 'as you can see, use &lt;img src="asd"/&gt; to use'
     assert_equal str, format_article(str)
   end
+
   def test_html_with_pre_and_newline2br
     result = File.read('test/sample/complex_article_result.txt').chop
     input  = File.read('test/sample/complex_article.txt')
@@ -227,27 +221,9 @@ compilation mode. 非常驚人的開發速度。<br />
 此外，其中一位開發者，<a href="http://blog.headius.com/">Charles Nutter</a> 也經常參與 <a href="http://www.ruby-forum.com/forum/14">ruby-core</a> 的討論，<br />
 對於 Ruby 的開發頗有貢獻。&lt;/xd&gt;</zzz>'
 
-    # no whitespace at the end of img tag
-    expected_libxml = '<img style="float: right;" src="http://flolac.iis.sinica.edu.tw/lambdawan/sites/default/files/ruby.png.thumb.jpg"/><br />
-<a href="http://www.ruby-forum.com/topic/169911">JRuby 1.1.5 Released</a><br />
-<a href="http://jruby.codehaus.org/">JRuby</a> 是用 Java 寫成的 Ruby interpreter/compiler.<br />
-原本 JRuby 只是普通的 open source project, 後來因為 <a href="http://www.sun.com/">Sun Microsystem</a>,<br />
-也就是 Java 的開發公司，看好 JRuby, 於是僱用 JRuby team,<br />
-full time 開發 JRuby. 後來 JRuby 在各方面都快速大幅成長，<br />
-尤其效能有了不可思議的大幅提昇，可能是 Sun 有一些撇步沒有公開吧。<br />
-<br />
-效能大幅提昇之後，JRuby 開發沒有停緩，接下來是非常大量的相容性提昇。<br />
-也從原本僅支援 interpret mode 到後來也支援 just in time 與 ahead of time 的<br />
-compilation mode. 非常驚人的開發速度。<br />
-<zzz>&lt;xd&gt;<br />
-此外，其中一位開發者，<a href="http://blog.headius.com/">Charles Nutter</a> 也經常參與 <a href="http://www.ruby-forum.com/forum/14">ruby-core</a> 的討論，<br />
-對於 Ruby 的開發頗有貢獻。&lt;/xd&gt;</zzz>'
-
     result = format_article(input, SetCommon.new, :zzz)
     if RUBY_VERSION =~ /^1\.8/ && FriendlyFormat.adapter == FriendlyFormat::HpricotAdapter
       assert_equal(expected_18_hpricot, result)
-    elsif FriendlyFormat.adapter == FriendlyFormat::LibxmlAdapter
-      assert_equal(expected_libxml, result)
     else
       assert_equal(expected, result)
     end
