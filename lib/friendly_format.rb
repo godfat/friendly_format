@@ -212,10 +212,6 @@ module FriendlyFormat
       }.join
     end
 
-    # i cannot find a way to escape both lt and gt,
-    # so it's a trick that just escape lt and no browser
-    # would treat complex lt and gt structure to be a tag
-    # wraping content.
     # @api private
     def escape_ltgt text
       text.gsub('<', '&lt;').gsub('>', '&gt;')
