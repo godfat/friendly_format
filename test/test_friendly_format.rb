@@ -132,12 +132,7 @@ http://www.amazon.co.jp/%E3%80%8C%E7%84%94~%E3%83%9B%E3%83%A0%E3%83%A9%E3%80%8D~
 
     str = 'orz<img>asd'
     assert_equal('orz<img />asd', format_article(str, :img))
-
-    if FriendlyFormat.adapter == FriendlyFormat::NokogiriAdapter
-      assert_equal('orz&lt;img&gt;asd', format_article(str))
-    else
-      assert_equal('orz&lt;img /&gt;asd', format_article(str))
-    end
+    assert_equal('orz&lt;img&gt;asd', format_article(str))
   end
 
   def test_trim_url

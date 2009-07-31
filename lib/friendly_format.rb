@@ -192,16 +192,15 @@ module FriendlyFormat
             if adapter.empty?(e) || e.name == 'a'
               adapter.to_xhtml(e)
             else
-              "<#{e.name}#{FriendlyFormat.node_attrs(e)}>" +
-              format_article_rec(
-                e, allowed_tags, e.name == 'pre') +
+              FriendlyFormat.node_tag_normal(e) +
+              format_article_rec(e, allowed_tags, e.name == 'pre') +
               "</#{e.name}>"
             end
           else
+            FriendlyFormat.node_tag_escape(e) +
             if adapter.empty?(e)
-              escape_ltgt(e.to_s)
+              ''
             else
-              "&lt;#{e.name}#{FriendlyFormat.node_attrs(e)}&gt;" +
               format_article_rec(e, allowed_tags) +
               "&lt;/#{e.name}&gt;"
             end
@@ -228,6 +227,14 @@ module FriendlyFormat
       else
         output
       end
+    end
+
+    def node_tag_normal node
+      "<#{node.name}#{FriendlyFormat.node_attrs(node)}>"
+    end
+
+    def node_tag_escape node
+      "&lt;#{node.name}#{FriendlyFormat.node_attrs(node)}&gt;"
     end
 
     def node_attrs node
