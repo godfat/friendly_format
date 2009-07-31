@@ -10,6 +10,7 @@
 * fixed a bug that added extra slash in not allowed tag
 * fixed format_autolink_rec, use the same trick in format_aritcle
 * now tag attributes are ordered by lexical order
+* now js attrs in allowed tags would be filter out
 
 == friendly_format 0.6.1 / 2009-04-05
 
