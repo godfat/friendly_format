@@ -17,14 +17,6 @@ module FriendlyFormat
       node.content
     end
 
-    def text? node
-      node.text?
-    end
-
-    def element? node
-      node.elem?
-    end
-
     def empty? node
       node.empty?
     end

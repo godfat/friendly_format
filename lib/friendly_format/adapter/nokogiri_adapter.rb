@@ -22,14 +22,6 @@ module FriendlyFormat
       node.to_s
     end
 
-    def text? node
-      node.text?
-    end
-
-    def element? node
-      node.element?
-    end
-
     def empty? node
       node.children.empty?
     end

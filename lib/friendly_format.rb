@@ -148,10 +148,10 @@ module FriendlyFormat
     # @api private
     def format_autolink_rec elem, attrs = {}
       elem.children.map{ |e|
-        if adapter.text?(e)
+        if e.text?
           format_url(e.content, attrs)
 
-        elsif adapter.element?(e)
+        elsif e.elem?
           if adapter.empty?(e)
             adapter.to_xhtml(e)
           else
@@ -180,14 +180,14 @@ module FriendlyFormat
     # @api private
     def format_article_rec elem, allowed_tags = Set.new, no_format_newline = false
       elem.children.map{ |e|
-        if adapter.text?(e)
+        if e.text?
           if no_format_newline
             format_url(adapter.content(e))
           else
             format_newline(format_url(adapter.content(e)))
           end
 
-        elsif adapter.element?(e)
+        elsif e.elem?
           if allowed_tags.member?(e.name)
             if adapter.empty?(e) || e.name == 'a'
               adapter.to_xhtml(e)
