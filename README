@@ -23,6 +23,7 @@ by Lin Jen-Shin (aka godfat-真常[http://godfat.org])
 
 == REQUIREMENTS:
 
+ * ruby 1.8+ or 1.9.1+
  * hpricot     >=0.7 or
  * nokogiri    >=1.2 or
 
