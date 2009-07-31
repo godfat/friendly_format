@@ -4,6 +4,7 @@ require 'nokogiri'
 module FriendlyFormat
   module NokogiriAdapter
     module_function
+
     def parse html
       # root is html, children is [body], first is body
       # drop zzz with .children.first since it would wrap a tag p for the article
@@ -16,10 +17,6 @@ module FriendlyFormat
 
     def to_xhtml node
       node.to_xhtml
-    end
-
-    def content node
-      node.to_s
     end
 
     def empty? node

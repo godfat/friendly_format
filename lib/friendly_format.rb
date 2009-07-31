@@ -182,9 +182,9 @@ module FriendlyFormat
       elem.children.map{ |e|
         if e.text?
           if no_format_newline
-            format_url(adapter.content(e))
+            format_url(e.to_html)
           else
-            format_newline(format_url(adapter.content(e)))
+            format_newline(format_url(e.to_html))
           end
 
         elsif e.elem?

@@ -13,10 +13,6 @@ module FriendlyFormat
       node.to_html
     end
 
-    def content node
-      node.content
-    end
-
     def empty? node
       node.empty?
     end
