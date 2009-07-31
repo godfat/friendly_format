@@ -155,7 +155,7 @@ module FriendlyFormat
           if adapter.empty?(e)
             adapter.to_xhtml(e)
           else
-            FriendlyFormat.node_tag_normal(e) +
+            node_tag_normal(e) +
             format_autolink_rec(e, attrs) +
             "</#{e.name}>"
           end
@@ -192,14 +192,14 @@ module FriendlyFormat
         elsif e.elem?
           if allowed_tags.member?(e.name)
             if adapter.empty?(e)
-              FriendlyFormat.node_tag_single(e)
+              node_tag_single(e)
             else
-              FriendlyFormat.node_tag_normal(e) +
+              node_tag_normal(e) +
               format_article_rec(e, allowed_tags, e.name) +
               "</#{e.name}>"
             end
           else
-            FriendlyFormat.node_tag_escape(e) +
+            node_tag_escape(e) +
             if adapter.empty?(e)
               ''
             else
@@ -232,15 +232,15 @@ module FriendlyFormat
     end
 
     def node_tag_single node
-      "<#{node.name}#{FriendlyFormat.node_attrs(node)} />"
+      "<#{node.name}#{node_attrs(node)} />"
     end
 
     def node_tag_normal node
-      "<#{node.name}#{FriendlyFormat.node_attrs(node)}>"
+      "<#{node.name}#{node_attrs(node)}>"
     end
 
     def node_tag_escape node
-      "&lt;#{node.name}#{FriendlyFormat.node_attrs(node)}&gt;"
+      "&lt;#{node.name}#{node_attrs(node)}&gt;"
     end
 
     def node_attrs node
