@@ -1,5 +1,5 @@
-= friendly_format 0.6.1
-by Lin Jen-Shin (a.k.a. godfat-真常[http://godfat.org])
+= friendly_format 0.7
+by Lin Jen-Shin (aka godfat-真常[http://godfat.org])
   godfat (XD) godfat.org
 
 == LINKS:
@@ -19,7 +19,6 @@ by Lin Jen-Shin (a.k.a. godfat-真常[http://godfat.org])
  FriendlyFormat.format_article(text, FriendlyFormat::SetCommon.new)
 
  FriendlyFormat.adapter = FriendlyFormat::NokogiriAdapter
- FriendlyFormat.adapter = FriendlyFormat::LibxmlAdapter
  FriendlyFormat.adapter = FriendlyFormat::HpricotAdapter # default
 
 == REQUIREMENTS:
@@ -29,13 +28,13 @@ by Lin Jen-Shin (a.k.a. godfat-真常[http://godfat.org])
 
 == INSTALL:
 
-* sudo gem install friendly_format
+* gem install friendly_format
 
 == LICENSE:
 
 Apache License 2.0
 
-Copyright (c) 2008, Lin Jen-Shin (a.k.a. godfat 真常)
+Copyright (c) 2008, Lin Jen-Shin (aka godfat 真常)
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
