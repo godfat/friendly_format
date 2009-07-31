@@ -1,6 +1,6 @@
 = friendly_format changes history
 
-== friendly_format 0.7 / ?
+== friendly_format 0.7.0 / 2009-07-31
 
 * no more super long line. added a newline after br tag.
 * all adapters work nearly the same now.

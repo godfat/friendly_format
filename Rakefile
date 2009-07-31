@@ -9,7 +9,7 @@ PROJ.email = 'godfat (XD) godfat.org'
 PROJ.url = "http://github.com/godfat/#{PROJ.name}"
 PROJ.rubyforge.name = 'ludy'
 
-PROJ.gem.development_dependencies << ['hpricot',     '>=0.7'] <<
+PROJ.gem.development_dependencies << ['hpricot',     '>=0.8'] <<
                                      ['nokogiri',    '>=1.2']
 # PROJ.ruby_opts.delete '-w'
 
