@@ -2,11 +2,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{friendly_format}
-  s.version = "0.7.0"
+  s.version = "0.7.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Lin Jen-Shin (aka godfat \347\234\237\345\270\270)"]
-  s.date = %q{2009-07-31}
+  s.date = %q{2009-08-06}
   s.description = %q{ make user input be valid xhtml and format it with gsub("\n", "<br/>") etc.
  you can partially allow some tags and don't escape them.}
   s.email = %q{godfat (XD) godfat.org}
