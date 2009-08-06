@@ -5,7 +5,6 @@ require 'friendly_format/set_strict'
 
 # 2008-05-09 godfat
 module FriendlyFormat
-  autoload(:LibxmlAdapter,   'friendly_format/adapter/libxml_adapter')
   autoload(:HpricotAdapter,  'friendly_format/adapter/hpricot_adapter')
   autoload(:NokogiriAdapter, 'friendly_format/adapter/nokogiri_adapter')
 
@@ -15,11 +14,7 @@ module FriendlyFormat
       @adapter ||= begin
                      HpricotAdapter
                    rescue LoadError
-                     begin
-                       NokogiriAdapter
-                     rescue LoadError
-                       LibxmlAdapter
-                     end
+                     NokogiriAdapter
                    end
     end
   end
