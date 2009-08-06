@@ -244,7 +244,9 @@ module FriendlyFormat
     end
 
     def node_attrs_reject_js node
-      attrs2str(node.attributes.reject{ |k, v| k =~ /\Aon/ })
+      attrs2str(node.attributes.reject{ |k, v|
+        k      =~ /\Aon/ ||
+        v.to_s =~ /\Ajavascript/ })
     end
 
     def attrs2str attrs

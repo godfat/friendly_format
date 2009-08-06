@@ -236,6 +236,9 @@ compilation mode. 非常驚人的開發速度。<br />
 
     s = '<a href="#" onclick="window.alert(\'attack!\')">js</a>'
     assert_equal(FriendlyFormat.escape_ltgt(s), format_article(s))
+
+    s = '<a href="javascript:alert(\'attack!\')">win a wing!</a>'
+    assert_equal('<a>win a wing!</a>', format_article(s, :a))
   end
 end
 
