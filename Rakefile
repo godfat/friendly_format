@@ -1,41 +1,31 @@
 # encoding: utf-8
 
-SUDO = '' # this prevent `rake gem:install` to use sudo
+begin
+  require 'bones'
+rescue LoadError
+  abort '### Please install the "bones" gem ###'
+end
 
-require 'bones'
-Bones.setup
+ensure_in_path 'lib'
+require 'friendly_format/version'
 
-PROJ.name = 'friendly_format'
-PROJ.authors = 'Lin Jen-Shin (aka godfat 真常)'
-PROJ.email = 'godfat (XD) godfat.org'
-PROJ.url = "http://github.com/godfat/#{PROJ.name}"
-PROJ.rubyforge.name = 'ludy'
+Bones{
+  name    'friendly_format'
+  url     'http://github.com/godfat/friendly_format'
+  version FriendlyFormat::VERSION
 
-PROJ.gem.development_dependencies << ['hpricot',     '>=0.8'] <<
-                                     ['nokogiri',    '>=1.2']
-# PROJ.ruby_opts.delete '-w'
+  depend_on 'nokogiri', :development => true, :version => '>=1.2'
+  depend_on 'hpricot',  :development => true, :version => '>=0.8'
 
-PROJ.description = PROJ.summary = paragraphs_of('README', 'description').join("\n\n")
-PROJ.changes = paragraphs_of('CHANGES', 0..1).join("\n\n")
-PROJ.version = File.read("lib/#{PROJ.name}/version.rb").gsub(/.*VERSION = '(.*)'.*/m, '\1')
+  authors 'Lin Jen-Shin (aka godfat 真常)'
+  email   'godfat (XD) godfat.org'
 
-PROJ.exclude += ['^tmp', 'tmp$', '^pkg', '^\.gitignore$',
-                 '^ann-', '\.sqlite3$', '\.db$']
-
-PROJ.rdoc.remote_dir = PROJ.name
-
-PROJ.readme_file = 'README'
-PROJ.rdoc.main = 'README'
-PROJ.rdoc.exclude += ['Rakefile', '^tasks', '^test']
-PROJ.rdoc.include << '\w+'
-# PROJ.rdoc.opts << '--diagram' if !Rake::Win32 and `which dot` =~ %r/\/dot/
-PROJ.rdoc.opts += ['--charset=utf-8', '--inline-source',
-                   '--line-numbers', '--promiscuous']
-
-PROJ.spec.opts << '--color'
-
-PROJ.ann.file = "ann-#{PROJ.name}-#{PROJ.version}"
-PROJ.ann.paragraphs.concat %w[LINKS SYNOPSIS REQUIREMENTS INSTALL LICENSE]
+  rubyforge.name 'ludy'
+  history_file   'CHANGES'
+   readme_file   'README'
+   ignore_file   '.gitignore'
+  rdoc.include   ['\w+']
+}
 
 CLEAN.include Dir['**/*.rbc']
 
