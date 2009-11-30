@@ -7,16 +7,19 @@ rescue LoadError
 end
 
 ensure_in_path 'lib'
-require 'friendly_format/version'
+proj = 'friendly_format'
 
 Bones{
-  name    'friendly_format'
-  url     'http://github.com/godfat/friendly_format'
+  require "#{proj}/version"
   version FriendlyFormat::VERSION
+
+  # ruby_opts [''] # silence warning, too many in addressable and/or dm-core
 
   depend_on 'nokogiri', :development => true, :version => '>=1.2'
   depend_on 'hpricot',  :development => true, :version => '>=0.8'
 
+  name    proj
+  url     "http://github.com/godfat/#{proj}"
   authors 'Lin Jen-Shin (aka godfat 真常)'
   email   'godfat (XD) godfat.org'
 
