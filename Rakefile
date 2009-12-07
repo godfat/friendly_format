@@ -8,9 +8,9 @@ end
 
 ensure_in_path 'lib'
 proj = 'friendly_format'
+require "#{proj}/version"
 
 Bones{
-  require "#{proj}/version"
   version FriendlyFormat::VERSION
 
   # ruby_opts [''] # silence warning, too many in addressable and/or dm-core
