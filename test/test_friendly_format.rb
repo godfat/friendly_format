@@ -1,7 +1,5 @@
 # encoding: utf-8
 
-require 'rubygems'
-
 TestCase = begin
              require 'minitest/unit'
              MiniTest::Unit.autorun
