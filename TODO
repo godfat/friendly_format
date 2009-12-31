@@ -7,3 +7,4 @@
   <a href="/">嗯</a> as 1 character too. never cut out tag and unicode.
 
 * an executable to format text from stdin to stdout.
+ - options for it. includes 1. file input, allowed tags selection

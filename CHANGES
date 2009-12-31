@@ -1,5 +1,8 @@
 = friendly_format changes history
 
+== friendly_format 0.7.2 / ?
+* an executable to format text from stdin to stdout.
+
 == friendly_format 0.7.1 / 2009-08-06
 * filter attribute value start with javascript.
 

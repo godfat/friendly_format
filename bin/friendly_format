@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+
+require 'friendly_format'
+
+puts FriendlyFormat.format_article($stdin.read, FriendlyFormat::SetCommon.new)
