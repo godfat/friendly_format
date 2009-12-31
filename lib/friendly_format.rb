@@ -239,13 +239,15 @@ module FriendlyFormat
     end
 
     def node_attrs_reject_js node
-      attrs2str(node.attributes.reject{ |k, v|
+      # TODO: no need to convert to hash for nokogiri
+      attrs2str(Hash[node.attributes].reject{ |k, v|
         k      =~ /\Aon/ ||
         v.to_s =~ /\Ajavascript/ })
     end
 
     def attrs2str attrs
-      attrs.sort.inject(''){ |i, (k, v)| i + " #{k}=\"#{v}\"" }
+      # TODO: no need to convert to hash for nokogiri
+      Hash[attrs].sort.inject(''){ |i, (k, v)| i + " #{k}=\"#{v}\"" }
     end
 
   end

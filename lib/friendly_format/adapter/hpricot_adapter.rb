@@ -1,4 +1,6 @@
 
+puts '[WARN] [DEPRECATED] hpricot backend for friendly_foramt is deprecated, and would be removed in version 0.8+'
+
 require 'hpricot'
 
 module FriendlyFormat

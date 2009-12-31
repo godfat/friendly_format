@@ -1,7 +1,9 @@
 = friendly_format changes history
 
-== friendly_format 0.7.2 / ?
+== friendly_format 0.7.2 / 2009-12-31
 * an executable to format text from stdin to stdout.
+* fixed latest hpricot compatibility
+* hpricot support is deprecated, and would be removed in 0.8+
 
 == friendly_format 0.7.1 / 2009-08-06
 * filter attribute value start with javascript.
