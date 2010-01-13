@@ -1,5 +1,8 @@
 = friendly_format changes history
 
+== friendly_format 0.7.3 / 2010-01-13
+* favor nokogiri
+
 == friendly_format 0.7.2 / 2009-12-31
 * an executable to format text from stdin to stdout.
 * fixed latest hpricot compatibility

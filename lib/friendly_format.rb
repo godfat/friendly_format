@@ -5,16 +5,16 @@ require 'friendly_format/set_strict'
 
 # 2008-05-09 godfat
 module FriendlyFormat
-  autoload(:HpricotAdapter,  'friendly_format/adapter/hpricot_adapter')
   autoload(:NokogiriAdapter, 'friendly_format/adapter/nokogiri_adapter')
+  autoload(:HpricotAdapter,  'friendly_format/adapter/hpricot_adapter')
 
   class << self
     attr_writer(:adapter)
     def adapter
       @adapter ||= begin
-                     HpricotAdapter
-                   rescue LoadError
                      NokogiriAdapter
+                   rescue LoadError
+                     HpricotAdapter
                    end
     end
   end
