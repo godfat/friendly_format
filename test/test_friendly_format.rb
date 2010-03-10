@@ -70,6 +70,7 @@ OpenGL, 還有一些 web cgi 之類的東西也有。
 現在切入正是時機啊... XD' == s)
     assert_equal(s, format_autolink_regexp(str))
   end
+
   def test_persent
     str =
 'XDDDD
@@ -82,6 +83,7 @@ http://www.amazon.co.jp/%E3%80%8C%E7%84%94~%E3%83%9B%E3%83%A0%E3%83%A9%E3%80%8D~
 <a href="http://www.amazon.co.jp/%E3%80%8C%E7%84%94~%E3%83%9B%E3%83%A0%E3%83%A9%E3%80%8D~Ar-tonelico2-hymmnos-concert-Side-%E7%B4%85~/dp/B000VKZL30/ref=pd_sbs_sw_img_2" title="http://www.amazon.co.jp/%E3%80%8C%E7%84%94~%E3%83%9B%E3%83%A0%E3%83%A9%E3%80%8D~Ar-tonelico2-hymmnos-concert-Side-%E7%B4%85~/dp/B000VKZL30/ref=pd_sbs_sw_img_2">http://www.amazon.co.jp/%E3%80%8C%E7%84%94~%E3%83%9B%E3%83%A0%E3%83%A9%E...</a> orz', s)
     assert_equal s, format_autolink_regexp(str)
   end
+
   def test_img_src
     str =
 'Thirst for Knowledge
@@ -100,24 +102,34 @@ http://www.amazon.co.jp/%E3%80%8C%E7%84%94~%E3%83%9B%E3%83%A0%E3%83%A9%E3%80%8D~
 '<a href="http://en.wikipedia.org/wiki/Haskell_%28programming_language%29" title="http://en.wikipedia.org/wiki/Haskell_%28programming_language%29">http://en.wikipedia.org/wiki/Haskell_%28programming_language%29</a>', s = format_autolink(str)
     assert_equal s, format_autolink_regexp(str)
   end
+
   def test_wikipedia_parentheses
     str = 'http://en.wikipedia.org/wiki/Haskell_(programming_language)'
     assert_equal \
 '<a href="http://en.wikipedia.org/wiki/Haskell_" title="http://en.wikipedia.org/wiki/Haskell_" class="XD">http://en.wikipedia.org/wiki/Haskell_</a>(programming_language)', s = format_autolink(str, :class => 'XD')
     assert_equal s, format_autolink_regexp(str, :class => 'XD')
   end
+
   def test_fixing_html
     str = 'test<p>if missing end of p'
     assert_equal 'test<p>if missing end of p</p>', format_autolink(str)
     str = 'test<p>if missing<a> end of p'
     assert_equal 'test<p>if missing<a> end of p</a></p>', format_autolink(str)
   end
+
   def test_www_url
     str = 'go to www.google.com to see if you can see'
     assert_equal 'go to <a href="http://www.google.com" title="http://www.google.com">www.google.com</a> to see if you can see',
       s = format_autolink(str)
     assert_equal s, format_autolink_regexp(str)
   end
+
+  def test_bang_in_uri
+    msg = 'http://www.facebook.com/home.php?#!/group.php?gid=123'
+    assert_equal "<a href=\"#{msg}\" title=\"#{msg}\">#{msg}</a>",
+      format_autolink_regexp(msg)
+  end
+
   def test_escape_html_and_correct_html
     str = 'test<p>if missing end of p'
     assert_equal 'test<p>if missing end of p</p>', format_article(str, :p)
