@@ -16,7 +16,6 @@ Bones{
   # ruby_opts [''] # silence warning, too many in addressable and/or dm-core
 
   depend_on 'nokogiri', :development => true, :version => '>=1.2'
-  depend_on 'hpricot',  :development => true, :version => '>=0.8'
 
   name    proj
   url     "http://github.com/godfat/#{proj}"
